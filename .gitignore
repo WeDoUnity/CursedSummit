@@ -253,6 +253,5 @@ _Pvt_Extensions
 .fake/
 
 # Personal
-autocopy.bat
 Thumbs.db
 *.lnk
