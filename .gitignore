@@ -6,7 +6,6 @@
 /[Bb]uilds/
 /Assets/AssetStoreTools*
 ExportedObj/
-*.pidb
 *.svd
 
 # Unity3D generated meta files
@@ -252,6 +251,8 @@ _Pvt_Extensions
 # FAKE - F# Make
 .fake/
 
-# Personal
+# Windows image thumbnail file
 Thumbs.db
+
+# Direct shortcut file (user path specific)
 *.lnk
