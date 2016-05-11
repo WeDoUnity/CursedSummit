@@ -1,4 +1,4 @@
-# WeDoUnity
+﻿# WeDoUnity
 **WeDoUnity is:**
 - Christophe Savard (christophe_savard@hotmail.ca)
 - Guillaume Raymond (guillaumeraymond@hotmail.ca)
@@ -8,3 +8,5 @@
 ### License
 
 Copyright © WeDoUnity 2016 - All Rights Reserved
+
+*Guillaume pu du cul*
