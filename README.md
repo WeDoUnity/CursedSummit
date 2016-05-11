@@ -7,5 +7,3 @@
 ### License
 
 Copyright © WeDoUnity 2016 - All Rights Reserved
-
-*Guillaume pu du cul*
