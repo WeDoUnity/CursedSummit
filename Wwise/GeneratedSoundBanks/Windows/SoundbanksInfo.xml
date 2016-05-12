@@ -1,0 +1,23 @@
+<?xml version="1.0" encoding="utf-8"?>
+<SoundBanksInfo Platform="Windows" BasePlatform="Windows" SchemaVersion="10" SoundbankVersion="113">
+	<RootPaths>
+		<ProjectRoot>C:\Users\GuillaumeRaymond\Documents\GitHub\TheGame\Wwise\</ProjectRoot>
+		<SourceFilesRoot>C:\Users\GuillaumeRaymond\Documents\GitHub\TheGame\Wwise\.cache\Windows\</SourceFilesRoot>
+		<SoundBanksRoot>C:\Users\GuillaumeRaymond\Documents\GitHub\TheGame\Wwise\GeneratedSoundBanks\Windows\</SoundBanksRoot>
+		<ExternalSourcesInputFile></ExternalSourcesInputFile>
+		<ExternalSourcesOutputRoot>C:\Users\GuillaumeRaymond\Documents\GitHub\TheGame\Wwise\GeneratedSoundBanks\Windows\</ExternalSourcesOutputRoot>
+	</RootPaths>
+	<DialogueEvents/>
+	<StreamedFiles/>
+	<MediaFilesNotInAnyBank/>
+	<SoundBanks>
+		<SoundBank Id="1355168291" Language="SFX">
+			<ShortName>Init</ShortName>
+			<Path>Init.bnk</Path>
+		</SoundBank>
+		<SoundBank Id="3555188606" Language="SFX">
+			<ShortName>TheGame_SoundBank</ShortName>
+			<Path>TheGame_SoundBank.bnk</Path>
+		</SoundBank>
+	</SoundBanks>
+</SoundBanksInfo>

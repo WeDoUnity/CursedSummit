@@ -1,0 +1,70 @@
+%YAML 1.1
+%TAG !u! tag:unity3d.com,2011:
+--- !u!114 &11400000
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_PrefabParentObject: {fileID: 0}
+  m_PrefabInternal: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 35ed9fa8a7043b34389ab468e2b05f2f, type: 3}
+  m_Name: AkWwiseProjectData
+  m_EditorClassIdentifier: 
+  CurrentPluginConfig: Profile
+  EventWwu:
+  - PhysicalPath: Events\Default Work Unit.wwu
+    ParentPhysicalPath: 
+    Guid: '{E1ABAF98-EC33-4811-A2AC-015E39787FA0}'
+    m_lastTimePsrt1: -1924687706
+    m_lastTimePart2: -1999406419
+    List: []
+  AuxBusWwu:
+  - PhysicalPath: Master-Mixer Hierarchy\Default Work Unit.wwu
+    ParentPhysicalPath: 
+    Guid: '{047A48E9-7269-417D-99B4-789C03CF0DC7}'
+    m_lastTimePsrt1: 833281502
+    m_lastTimePart2: -1999406421
+    List: []
+  StateWwu:
+  - PhysicalPath: States\Default Work Unit.wwu
+    ParentPhysicalPath: 
+    Guid: '{8CE245E4-B3A4-48FC-9BB5-D583F80FE35C}'
+    m_lastTimePsrt1: 833311525
+    m_lastTimePart2: -1999406421
+    List: []
+  SwitchWwu:
+  - PhysicalPath: Switches\Default Work Unit.wwu
+    ParentPhysicalPath: 
+    Guid: '{480FCDB1-4F23-4BAD-8739-F5CB90176E70}'
+    m_lastTimePsrt1: 833391585
+    m_lastTimePart2: -1999406421
+    List: []
+  BankWwu:
+  - PhysicalPath: SoundBanks\Default Work Unit.wwu
+    ParentPhysicalPath: 
+    Guid: '{B71EB404-B079-4E3D-BA6B-CD91EC22AB7C}'
+    m_lastTimePsrt1: -1924587684
+    m_lastTimePart2: -1999406419
+    List:
+    - Name: TheGame_SoundBank
+      Path: Default Work Unit\TheGame_SoundBank
+      PathAndIcons:
+      - ElementName: Default Work Unit
+        ObjectType: 12
+      - ElementName: TheGame_SoundBank
+        ObjectType: 7
+      ID: -739778690
+      Guid: fdb0e683b1f51447893345eb37665667
+  ExpandedItems:
+  - /Wwise_TheGame
+  m_lastPopulateTimePsrt1: 0
+  m_lastPopulateTimePart2: 0
+  autoPopulateEnabled: 1
+  basePath: Audio\GeneratedSoundBanks
+  language: English(US)
+  defaultPoolSize: 4096
+  lowerPoolSize: 2048
+  streamingPoolSize: 1024
+  preparePoolSize: 0
+  memoryCutoffThreshold: 0.95
