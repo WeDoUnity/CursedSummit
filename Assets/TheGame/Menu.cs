@@ -4,6 +4,6 @@ namespace TheGame
 {
     public class Menu : MonoBehaviour
     {
-        //TODO: stuff
+        //TODO: Stuff
     }
 }

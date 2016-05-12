@@ -80,7 +80,7 @@
     <Compile Include="Assets\CSharp 6.0 Support\AsyncTools\UnityTaskScheduler.cs" />
     <Compile Include="Assets\CSharp 6.0 Support\FormattableString\FormattableString.cs" />
     <Compile Include="Assets\CSharp 6.0 Support\FormattableString\FormattableStringFactory.cs" />
-    <Compile Include="Assets\Scripts\Menu.cs" />
+    <Compile Include="Assets\TheGame\Menu.cs" />
   </ItemGroup>
   <ItemGroup>
     <None Include="Assets\CSharp 6.0 Support\AsyncTools\Plugins\AsyncBridge.Net35.xml" />
