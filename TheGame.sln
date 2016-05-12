@@ -1,9 +1,7 @@
 ﻿
 Microsoft Visual Studio Solution File, Format Version 12.00
 # Visual Studio 2015
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "TheGame.CSharp.Plugins", "TheGame.CSharp.Plugins.csproj", "{EB07E20F-52E9-5933-7129-1099D29A2FB0}"
-EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "TheGame.CSharp.Editor", "TheGame.CSharp.Editor.csproj", "{03D22B2F-D2D0-8BD2-09FE-5DCB6BDD6E95}"
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "TheGame.CSharp", "TheGame.CSharp.csproj", "{C78B1BEB-3442-493B-2AC5-749832AAE4E7}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
@@ -11,14 +9,10 @@ Global
 		Release|Any CPU = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(ProjectConfigurationPlatforms) = postSolution
-		{EB07E20F-52E9-5933-7129-1099D29A2FB0}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
-		{EB07E20F-52E9-5933-7129-1099D29A2FB0}.Debug|Any CPU.Build.0 = Debug|Any CPU
-		{EB07E20F-52E9-5933-7129-1099D29A2FB0}.Release|Any CPU.ActiveCfg = Release|Any CPU
-		{EB07E20F-52E9-5933-7129-1099D29A2FB0}.Release|Any CPU.Build.0 = Release|Any CPU
-		{03D22B2F-D2D0-8BD2-09FE-5DCB6BDD6E95}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
-		{03D22B2F-D2D0-8BD2-09FE-5DCB6BDD6E95}.Debug|Any CPU.Build.0 = Debug|Any CPU
-		{03D22B2F-D2D0-8BD2-09FE-5DCB6BDD6E95}.Release|Any CPU.ActiveCfg = Release|Any CPU
-		{03D22B2F-D2D0-8BD2-09FE-5DCB6BDD6E95}.Release|Any CPU.Build.0 = Release|Any CPU
+		{C78B1BEB-3442-493B-2AC5-749832AAE4E7}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{C78B1BEB-3442-493B-2AC5-749832AAE4E7}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{C78B1BEB-3442-493B-2AC5-749832AAE4E7}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{C78B1BEB-3442-493B-2AC5-749832AAE4E7}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
