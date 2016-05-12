@@ -1,8 +1,8 @@
 ﻿# WeDoUnity
 **WeDoUnity is:**
-- Christophe Savard (christophe_savard@hotmail.ca)
-- Guillaume Raymond (guillaumeraymond@hotmail.ca)
-- Olivier Mercier (mercier1337@gmail.com)
+- Christophe Savard - ![@StupidChris](https://github.com/StupidChris) (coding, engine)
+- Guillaume Raymond - ![@Lungwen](https://github.com/Lungwen) (audio, graphics)
+- Olivier Mercier - ![@JimmyRussels](https://github.com/JimmyRussels) (graphics, coding)
 
 ### License
 
