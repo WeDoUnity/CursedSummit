@@ -1,35 +1,48 @@
 ﻿using System;
 using System.Globalization;
 using System.IO;
+using System.Runtime.CompilerServices;
 using UnityEditor;
 using UnityEditor.Callbacks;
 using UnityEngine;
 
 namespace TheGame.Editor
 {
+    /// <summary>
+    /// Static class containing helper methods for the Unity editor with build versioning
+    /// </summary>
     [InitializeOnLoad]
-    public class Build
+    public static class Build
     {
         #region Constants
+        /// <summary>
+        /// Name of the BuildID file
+        /// </summary>
         private const string file = "buildID.build";
+        /// <summary>
+        /// Game build folder path of the BuildID file
+        /// </summary>
         private const string buildFile = "_Data/buildID.build";
         #endregion
 
         #region Static fields
-        private static int major;
-        private static int minor;
-        private static int build;
-        private static int revision;
-        private static string date;
-        private static readonly string path;
+        private static int major, minor, build, revision;   //Version number
+        private static string date;                         //Last build date
+        private static readonly string path;                //BuildID full file path
         #endregion
 
         #region Static properties
+        /// <summary>
+        /// Version number of the game
+        /// </summary>
         public static string Version
         {
             get { return string.Format("{0}.{1}.{2}.{3}", major, minor, build, revision); }
         }
 
+        /// <summary>
+        /// Current DateTime string, correctly formatted
+        /// </summary>
         public static string CurrentDate
         {
             get { return DateTime.Now.ToString("yyyy-MM-dd HH:mm:ss", CultureInfo.InvariantCulture); }
@@ -37,6 +50,9 @@ namespace TheGame.Editor
         #endregion
 
         #region Constructors
+        /// <summary>
+        /// Initializes BuildID components
+        /// </summary>
         static Build()
         {
             path = Path.Combine(Application.dataPath, file);
@@ -58,69 +74,102 @@ namespace TheGame.Editor
         }
         #endregion
 
-        #region Methods
+        #region Static methods
+        /// <summary>
+        /// Runs after each game build process, and saves the new BuildID to the game folder
+        /// </summary>
+        /// <param name="target">Target platform of the build</param>
+        /// <param name="pathToBuild">Full file path of the build executable</param>
         [PostProcessBuild]
         public static void OnBuild(BuildTarget target, string pathToBuild)
         {
             revision++;
             date = CurrentDate;
             string buildID = Version;
-            Debug.Log(pathToBuild);
             Debug.Log(string.Format("Building version {0}, at {1}", buildID, date));
             string[] lines =  { date + "|" + buildID };
             File.WriteAllLines(path, lines);
             File.WriteAllLines(Path.ChangeExtension(pathToBuild, null) + buildFile, lines);
         }
 
+        /// <summary>
+        /// Increments the Major version of the build number
+        /// </summary>
         [MenuItem("Version/Increase Major")]
         public static void IncreaseMajor()
         {
             major++;
-            Debug.Log("Current version: " + Version);
+            LogVersion();
         }
 
+        /// <summary>
+        /// Increments the Minor version of the build number
+        /// </summary>
         [MenuItem("Version/Increase Minor")]
         public static void IncreaseMinor()
         {
             minor++;
-            Debug.Log("Current version: " + Version);
+            LogVersion();
         }
 
+        /// <summary>
+        /// Increments the Build version of the build number
+        /// </summary>
         [MenuItem("Version/Increase Build")]
         public static void IncreaseBuild()
         {
             build++;
-            Debug.Log("Current version: " + Version);
+            LogVersion();
         }
 
+        /// <summary>
+        /// Resets the Major version of the build number to zero
+        /// </summary>
         [MenuItem("Version/Reset Major")]
         public static void ResetMajor()
         {
             major = 0;
-            Debug.Log("Current version: " + Version);
+            LogVersion();
         }
 
+        /// <summary>
+        /// Resets the Minor version of the build number to zero
+        /// </summary>
         [MenuItem("Version/Reset Minor")]
         public static void ResetMinor()
         {
             minor = 0;
-            Debug.Log("Current version: " + Version);
+            LogVersion();
         }
 
+        /// <summary>
+        /// Resets the Build version of the build number to zero
+        /// </summary>
         [MenuItem("Version/Reset Build")]
         public static void ResetBuild()
         {
             build = 0;
-            Debug.Log("Current version: " + Version);
+            LogVersion();
         }
 
+        /// <summary>
+        /// Saves the current BuildID to the Assets file
+        /// </summary>
         [MenuItem("Version/Save Version")]
         public static void SaveVersion()
         {
             string buildID = Version;
             Debug.Log("Saving version " + buildID);
-            string[] lines = { date + "|" + buildID };
-            File.WriteAllLines(path, lines);
+            File.WriteAllLines(path, new[] { date + "|" + buildID });
+        }
+
+        /// <summary>
+        /// Logs the current BuildID and saves the current Date
+        /// </summary>
+        private static void LogVersion()
+        {
+            date = CurrentDate;
+            Debug.Log("Current version: " + Version);
         }
         #endregion
     }
