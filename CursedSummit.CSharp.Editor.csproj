@@ -5,7 +5,7 @@
     <Platform Condition=" '$(Platform)' == '' ">AnyCPU</Platform>
     <ProductVersion>10.0.20506</ProductVersion>
     <SchemaVersion>2.0</SchemaVersion>
-    <ProjectGuid>{03D22B2F-D2D0-8BD2-09FE-5DCB6BDD6E95}</ProjectGuid>
+    <ProjectGuid>{8999BF41-CCE0-25CE-02F3-5CBCEE1D965F}</ProjectGuid>
     <OutputType>Library</OutputType>
     <AssemblyName>Assembly-CSharp-Editor</AssemblyName>
     <FileAlignment>512</FileAlignment>
@@ -17,7 +17,7 @@
     <UnityProjectType>Editor:5</UnityProjectType>
     <UnityBuildTarget>StandaloneWindows64:19</UnityBuildTarget>
     <UnityVersion>5.3.4f1</UnityVersion>
-    <RootNamespace>TheGame</RootNamespace>
+    <RootNamespace>CursedSummit</RootNamespace>
   </PropertyGroup>
   <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Debug|AnyCPU' ">
     <DebugType>pdbonly</DebugType>
@@ -98,9 +98,9 @@
     </Reference>
   </ItemGroup>
   <ItemGroup>
-    <ProjectReference Include="TheGame.CSharp.csproj">
-      <Project>{C78B1BEB-3442-493B-2AC5-749832AAE4E7}</Project>
-      <Name>TheGame.CSharp</Name>
+    <ProjectReference Include="CursedSummit.CSharp.csproj">
+      <Project>{2B1B2A7A-58DB-818B-89A3-3007035EAE4D}</Project>
+      <Name>CursedSummit.CSharp</Name>
     </ProjectReference>
   </ItemGroup>
   <ItemGroup>

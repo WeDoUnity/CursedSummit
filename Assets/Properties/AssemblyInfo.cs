@@ -4,10 +4,10 @@ using System.Runtime.InteropServices;
 // General Information about an assembly is controlled through the following 
 // set of attributes. Change these attribute values to modify the information
 // associated with an assembly.
-[assembly: AssemblyTitle("TheGame")]
-[assembly: AssemblyDescription("It's TheGame!")]
+[assembly: AssemblyTitle("CursedSummit")]
+[assembly: AssemblyDescription("The long trek to the Cursed Summit!")]
 [assembly: AssemblyCompany("WeDoUnity")]
-[assembly: AssemblyProduct("TheGame")]
+[assembly: AssemblyProduct("The Cursed Summit")]
 [assembly: AssemblyCopyright("Copyright © WeDoUnity 2016 - All Rights Reserved")]
 
 // Setting ComVisible to false makes the types in this assembly not visible 

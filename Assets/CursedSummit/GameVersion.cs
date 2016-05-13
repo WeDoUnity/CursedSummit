@@ -2,7 +2,7 @@
 using System.IO;
 using UnityEngine;
 
-namespace TheGame
+namespace CursedSummit
 {
     /// <summary>
     /// Static class holding the game's Version info

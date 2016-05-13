@@ -1,7 +1,7 @@
 ﻿using UnityEngine;
 using UnityEngine.UI;
 
-namespace TheGame.UI
+namespace CursedSummit.UI
 {
     /// <summary>
     /// A generic Progressbar helper class

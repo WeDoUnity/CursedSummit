@@ -2,7 +2,7 @@
 using UnityEngine;
 using UnityEngine.UI;
 
-namespace TheGame
+namespace CursedSummit
 {
     /// <summary>
     /// Main Menu handler
@@ -69,7 +69,7 @@ namespace TheGame
         {
             //Load saved games?
             this.cont.interactable = this.savedGames.Count > 0; //Can't continue if no saved games
-            this.build.text = "TheGame v" + GameVersion.Version;
+            this.build.text = "The Cursed Summit v" + GameVersion.Version;
         }
         #endregion
     }

@@ -1,12 +1,11 @@
 ﻿using System;
 using System.Globalization;
 using System.IO;
-using System.Runtime.CompilerServices;
 using UnityEditor;
 using UnityEditor.Callbacks;
 using UnityEngine;
 
-namespace TheGame.Editor
+namespace CursedSummit.Editor
 {
     /// <summary>
     /// Static class containing helper methods for the Unity editor with build versioning
@@ -86,7 +85,7 @@ namespace TheGame.Editor
             revision++;
             date = CurrentDate;
             string buildID = Version;
-            Debug.Log(string.Format("Building version {0}, at {1}", buildID, date));
+            Debug.Log(string.Format("Built version {0}, at {1}", buildID, date));
             string[] lines =  { date + "|" + buildID };
             File.WriteAllLines(path, lines);
             File.WriteAllLines(Path.ChangeExtension(pathToBuild, null) + buildFile, lines);
