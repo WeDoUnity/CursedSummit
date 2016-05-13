@@ -69,6 +69,7 @@
     </Reference>
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="Assets\Properties\AssemblyInfo.cs" />
     <Compile Include="Assets\CSharp 6.0 Support\AsyncTools\AsyncTools.cs" />
     <Compile Include="Assets\CSharp 6.0 Support\AsyncTools\UnityScheduler.cs" />
     <Compile Include="Assets\CSharp 6.0 Support\AsyncTools\UnitySynchronizationContext.cs" />
@@ -171,7 +172,6 @@
     <Compile Include="Assets\Wwise\Deployment\Components\AkTriggerMouseUp.cs" />
     <Compile Include="Assets\Wwise\Deployment\Components\AkUnityEventHandler.cs" />
     <Compile Include="Assets\Wwise\Deployment\Components\AkUtilities.cs" />
-    <Compile Include="Properties\AssemblyInfo.cs" />
   </ItemGroup>
   <ItemGroup>
     <None Include="Assets\CSharp 6.0 Support\AsyncTools\Plugins\AsyncBridge.Net35.xml" />
