@@ -1,7 +1,7 @@
 ﻿using UnityEngine;
 using UnityEngine.SceneManagement;
 
-namespace TheGame
+namespace CursedSummit
 {
     /// <summary>
     /// Game scenes

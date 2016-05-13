@@ -1,8 +1,8 @@
 ﻿using System.Collections.Generic;
-using TheGame.UI;
+using CursedSummit.UI;
 using UnityEngine;
 
-namespace TheGame
+namespace CursedSummit
 {
     /// <summary>
     /// General Game loader (nothing really implemented, only a framework skeleton)
