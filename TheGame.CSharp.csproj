@@ -42,9 +42,6 @@
   </PropertyGroup>
   <ItemGroup>
     <Reference Include="mscorlib" />
-    <Reference Include="Newtonsoft.Json">
-      <HintPath>Assets\Plugins\Newtonsoft.Json.dll</HintPath>
-    </Reference>
     <Reference Include="System" />
     <Reference Include="System.XML" />
     <Reference Include="System.Core" />
@@ -78,6 +75,7 @@
     <Compile Include="Assets\CSharp 6.0 Support\AsyncTools\UnityTaskScheduler.cs" />
     <Compile Include="Assets\CSharp 6.0 Support\FormattableString\FormattableString.cs" />
     <Compile Include="Assets\CSharp 6.0 Support\FormattableString\FormattableStringFactory.cs" />
+    <Compile Include="Assets\TheGame\GameVersion.cs" />
     <Compile Include="Assets\TheGame\Menu.cs" />
     <Compile Include="Assets\Wwise\Deployment\API\Generated\Common\AKRESULT.cs" />
     <Compile Include="Assets\Wwise\Deployment\API\Generated\Common\AkActionOnEventType.cs" />
