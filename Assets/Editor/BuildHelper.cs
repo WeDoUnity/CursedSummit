@@ -58,7 +58,7 @@ namespace CursedSummit.Editor
             if (File.Exists(path))
             {
                 string[] lines = File.ReadAllLines(path)[0].Split('|');
-                string[] version = lines[1].Split('.');
+                string[] version = lines[1].TrimStart('v').Split('.');
                 date = lines[0];
                 major = int.Parse(version[0]);
                 minor = int.Parse(version[1]);
@@ -85,8 +85,8 @@ namespace CursedSummit.Editor
             revision++;
             date = CurrentDate;
             string buildID = Version;
-            Debug.Log(string.Format("Built version {0}, at {1}", buildID, date));
-            string[] lines =  { date + "|" + buildID };
+            Debug.Log(string.Format("Built version v{0}, at {1}", buildID, date));
+            string[] lines =  { date + "|v" + buildID };
             File.WriteAllLines(path, lines);
             File.WriteAllLines(Path.ChangeExtension(pathToBuild, null) + buildFile, lines);
         }
@@ -158,8 +158,8 @@ namespace CursedSummit.Editor
         public static void SaveVersion()
         {
             string buildID = Version;
-            Debug.Log("Saving version " + buildID);
-            File.WriteAllLines(path, new[] { date + "|" + buildID });
+            Debug.Log("Saving version v" + buildID);
+            File.WriteAllLines(path, new[] { date + "|v" + buildID });
         }
 
         /// <summary>
@@ -168,7 +168,7 @@ namespace CursedSummit.Editor
         private static void LogVersion()
         {
             date = CurrentDate;
-            Debug.Log("Current version: " + Version);
+            Debug.Log("Current version: v" + Version);
         }
         #endregion
     }

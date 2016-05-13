@@ -52,19 +52,17 @@ namespace CursedSummit
             string path = Path.Combine(Application.dataPath, buildFile);
             try
             {
-                VersionString = File.ReadAllLines(path)[0].Split('|')[1];
+                VersionString = File.ReadAllLines(path)[0].Split('|')[1].TrimStart('v');
             }
             catch (Exception e)
             {
                 throw new FileNotFoundException("GameVersion could not properly load BuildID", path, e);
             }
-            VersionString = File.ReadAllLines(path)[0].Split('|')[1];
             Version = new Version(VersionString);
-            string[] versionNumbers = VersionString.Split('.');
-            Major    = int.Parse(versionNumbers[0]);
-            Minor    = int.Parse(versionNumbers[1]);
-            Build    = int.Parse(versionNumbers[2]);
-            Revision = int.Parse(versionNumbers[3]);
+            Major    = Version.Major;
+            Minor    = Version.Minor;
+            Build    = Version.Build;
+            Revision = Version.Revision;
         }
         #endregion
     }
