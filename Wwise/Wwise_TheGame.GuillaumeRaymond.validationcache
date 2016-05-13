@@ -1,0 +1,50 @@
+<?xml version="1.0" encoding="utf-8"?>
+<ValidationCache Version="1" SchemaVersion="70">
+	<ValidationCacheItem File="C:\Users\GuillaumeRaymond\Documents\GitHub\TheGame\Wwise\Actor-Mixer Hierarchy\Default Work Unit.wwu" DateLow="255147436" DateHigh="30518420"/>
+	<ValidationCacheItem File="C:\Users\GuillaumeRaymond\Documents\GitHub\TheGame\Wwise\Attenuations\Default Work Unit.wwu" DateLow="254947298" DateHigh="30518420"/>
+	<ValidationCacheItem File="C:\Users\GuillaumeRaymond\Documents\GitHub\TheGame\Wwise\Control Surface Sessions\Default Work Unit.wwu" DateLow="255207478" DateHigh="30518420"/>
+	<ValidationCacheItem File="C:\Users\GuillaumeRaymond\Documents\GitHub\TheGame\Wwise\Conversion Settings\Default Work Unit.wwu" DateLow="255357600" DateHigh="30518420"/>
+	<ValidationCacheItem File="C:\Users\GuillaumeRaymond\Documents\GitHub\TheGame\Wwise\Conversion Settings\Factory Conversion Settings.wwu" DateLow="2780309760" DateHigh="30449190"/>
+	<ValidationCacheItem File="C:\Users\GuillaumeRaymond\Documents\GitHub\TheGame\Wwise\Dynamic Dialogue\Default Work Unit.wwu" DateLow="255187464" DateHigh="30518420"/>
+	<ValidationCacheItem File="C:\Users\GuillaumeRaymond\Documents\GitHub\TheGame\Wwise\Effects\Default Work Unit.wwu" DateLow="255107411" DateHigh="30518420"/>
+	<ValidationCacheItem File="C:\Users\GuillaumeRaymond\Documents\GitHub\TheGame\Wwise\Effects\Factory Effects.wwu" DateLow="2780309760" DateHigh="30449190"/>
+	<ValidationCacheItem File="C:\Users\GuillaumeRaymond\Documents\GitHub\TheGame\Wwise\Events\Default Work Unit.wwu" DateLow="254967312" DateHigh="30518420"/>
+	<ValidationCacheItem File="C:\Users\GuillaumeRaymond\Documents\GitHub\TheGame\Wwise\Game Parameters\Default Work Unit.wwu" DateLow="254997331" DateHigh="30518420"/>
+	<ValidationCacheItem File="C:\Users\GuillaumeRaymond\Documents\GitHub\TheGame\Wwise\Interactive Music Hierarchy\Default Work Unit.wwu" DateLow="254887255" DateHigh="30518420"/>
+	<ValidationCacheItem File="C:\Users\GuillaumeRaymond\Documents\GitHub\TheGame\Wwise\Master-Mixer Hierarchy\Default Work Unit.wwu" DateLow="255057374" DateHigh="30518420"/>
+	<ValidationCacheItem File="C:\Users\GuillaumeRaymond\Documents\GitHub\TheGame\Wwise\Mixing Sessions\Default Work Unit.wwu" DateLow="255377607" DateHigh="30518420"/>
+	<ValidationCacheItem File="C:\Users\GuillaumeRaymond\Documents\GitHub\TheGame\Wwise\Modulators\Default Work Unit.wwu" DateLow="255397614" DateHigh="30518420"/>
+	<ValidationCacheItem File="C:\Users\GuillaumeRaymond\Documents\GitHub\TheGame\Wwise\Presets\Default Work Unit.wwu" DateLow="255027351" DateHigh="30518420"/>
+	<ValidationCacheItem File="C:\Users\GuillaumeRaymond\Documents\GitHub\TheGame\Wwise\Queries\Default Work Unit.wwu" DateLow="255127428" DateHigh="30518420"/>
+	<ValidationCacheItem File="C:\Users\GuillaumeRaymond\Documents\GitHub\TheGame\Wwise\Queries\Factory Queries.wwu" DateLow="2780309760" DateHigh="30449190"/>
+	<ValidationCacheItem File="C:\Users\GuillaumeRaymond\Documents\GitHub\TheGame\Wwise\SoundBanks\Default Work Unit.wwu" DateLow="254867237" DateHigh="30518420"/>
+	<ValidationCacheItem File="C:\Users\GuillaumeRaymond\Documents\GitHub\TheGame\Wwise\Soundcaster Sessions\Default Work Unit.wwu" DateLow="255007351" DateHigh="30518420"/>
+	<ValidationCacheItem File="C:\Users\GuillaumeRaymond\Documents\GitHub\TheGame\Wwise\States\Default Work Unit.wwu" DateLow="255087397" DateHigh="30518420"/>
+	<ValidationCacheItem File="C:\Users\GuillaumeRaymond\Documents\GitHub\TheGame\Wwise\Switches\Default Work Unit.wwu" DateLow="255167457" DateHigh="30518420"/>
+	<ValidationCacheItem File="C:\Users\GuillaumeRaymond\Documents\GitHub\TheGame\Wwise\Triggers\Default Work Unit.wwu" DateLow="254927283" DateHigh="30518420"/>
+	<ValidationCacheItem File="C:\Users\GuillaumeRaymond\Documents\GitHub\TheGame\Wwise\Wwise_TheGame.GuillaumeRaymond.wsettings" DateLow="2089767887" DateHigh="30518421"/>
+	<ValidationCacheItem File="C:\Users\GuillaumeRaymond\Documents\GitHub\TheGame\Wwise\Wwise_TheGame.wproj" DateLow="2525891155" DateHigh="30518420"/>
+	<ValidationCacheItem File="C:\Users\GuillaumeRaymond\Documents\GitHub\TheGame\Wwise_TheGame\Actor-Mixer Hierarchy\Default Work Unit.wwu" DateLow="255147436" DateHigh="30518420"/>
+	<ValidationCacheItem File="C:\Users\GuillaumeRaymond\Documents\GitHub\TheGame\Wwise_TheGame\Attenuations\Default Work Unit.wwu" DateLow="254947298" DateHigh="30518420"/>
+	<ValidationCacheItem File="C:\Users\GuillaumeRaymond\Documents\GitHub\TheGame\Wwise_TheGame\Control Surface Sessions\Default Work Unit.wwu" DateLow="255207478" DateHigh="30518420"/>
+	<ValidationCacheItem File="C:\Users\GuillaumeRaymond\Documents\GitHub\TheGame\Wwise_TheGame\Conversion Settings\Default Work Unit.wwu" DateLow="255357600" DateHigh="30518420"/>
+	<ValidationCacheItem File="C:\Users\GuillaumeRaymond\Documents\GitHub\TheGame\Wwise_TheGame\Conversion Settings\Factory Conversion Settings.wwu" DateLow="2780309760" DateHigh="30449190"/>
+	<ValidationCacheItem File="C:\Users\GuillaumeRaymond\Documents\GitHub\TheGame\Wwise_TheGame\Dynamic Dialogue\Default Work Unit.wwu" DateLow="255187464" DateHigh="30518420"/>
+	<ValidationCacheItem File="C:\Users\GuillaumeRaymond\Documents\GitHub\TheGame\Wwise_TheGame\Effects\Default Work Unit.wwu" DateLow="255107411" DateHigh="30518420"/>
+	<ValidationCacheItem File="C:\Users\GuillaumeRaymond\Documents\GitHub\TheGame\Wwise_TheGame\Effects\Factory Effects.wwu" DateLow="2780309760" DateHigh="30449190"/>
+	<ValidationCacheItem File="C:\Users\GuillaumeRaymond\Documents\GitHub\TheGame\Wwise_TheGame\Events\Default Work Unit.wwu" DateLow="254967312" DateHigh="30518420"/>
+	<ValidationCacheItem File="C:\Users\GuillaumeRaymond\Documents\GitHub\TheGame\Wwise_TheGame\Game Parameters\Default Work Unit.wwu" DateLow="254997331" DateHigh="30518420"/>
+	<ValidationCacheItem File="C:\Users\GuillaumeRaymond\Documents\GitHub\TheGame\Wwise_TheGame\Interactive Music Hierarchy\Default Work Unit.wwu" DateLow="254887255" DateHigh="30518420"/>
+	<ValidationCacheItem File="C:\Users\GuillaumeRaymond\Documents\GitHub\TheGame\Wwise_TheGame\Master-Mixer Hierarchy\Default Work Unit.wwu" DateLow="255057374" DateHigh="30518420"/>
+	<ValidationCacheItem File="C:\Users\GuillaumeRaymond\Documents\GitHub\TheGame\Wwise_TheGame\Mixing Sessions\Default Work Unit.wwu" DateLow="255377607" DateHigh="30518420"/>
+	<ValidationCacheItem File="C:\Users\GuillaumeRaymond\Documents\GitHub\TheGame\Wwise_TheGame\Modulators\Default Work Unit.wwu" DateLow="255397614" DateHigh="30518420"/>
+	<ValidationCacheItem File="C:\Users\GuillaumeRaymond\Documents\GitHub\TheGame\Wwise_TheGame\Presets\Default Work Unit.wwu" DateLow="255027351" DateHigh="30518420"/>
+	<ValidationCacheItem File="C:\Users\GuillaumeRaymond\Documents\GitHub\TheGame\Wwise_TheGame\Queries\Default Work Unit.wwu" DateLow="255127428" DateHigh="30518420"/>
+	<ValidationCacheItem File="C:\Users\GuillaumeRaymond\Documents\GitHub\TheGame\Wwise_TheGame\Queries\Factory Queries.wwu" DateLow="2780309760" DateHigh="30449190"/>
+	<ValidationCacheItem File="C:\Users\GuillaumeRaymond\Documents\GitHub\TheGame\Wwise_TheGame\SoundBanks\Default Work Unit.wwu" DateLow="254867237" DateHigh="30518420"/>
+	<ValidationCacheItem File="C:\Users\GuillaumeRaymond\Documents\GitHub\TheGame\Wwise_TheGame\Soundcaster Sessions\Default Work Unit.wwu" DateLow="255007351" DateHigh="30518420"/>
+	<ValidationCacheItem File="C:\Users\GuillaumeRaymond\Documents\GitHub\TheGame\Wwise_TheGame\States\Default Work Unit.wwu" DateLow="255087397" DateHigh="30518420"/>
+	<ValidationCacheItem File="C:\Users\GuillaumeRaymond\Documents\GitHub\TheGame\Wwise_TheGame\Switches\Default Work Unit.wwu" DateLow="255167457" DateHigh="30518420"/>
+	<ValidationCacheItem File="C:\Users\GuillaumeRaymond\Documents\GitHub\TheGame\Wwise_TheGame\Triggers\Default Work Unit.wwu" DateLow="254927283" DateHigh="30518420"/>
+	<ValidationCacheItem File="C:\Users\GuillaumeRaymond\Documents\GitHub\TheGame\Wwise_TheGame\Wwise_TheGame.wproj" DateLow="254817349" DateHigh="30518420"/>
+</ValidationCache>
