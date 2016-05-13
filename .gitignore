@@ -5,6 +5,7 @@
 [Ll]ibrary/
 sysinfo.txt
 *.stackdump
+output_log.txt
 
 # OS generated
 .DS_Store*
