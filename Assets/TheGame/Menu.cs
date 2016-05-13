@@ -9,6 +9,8 @@ namespace TheGame
         #region Fields
         [SerializeField]
         private Button cont;
+        [SerializeField]
+        private Text build;
         private List<object> savedGames = new List<object>();    //Temporary placeholder
         #endregion
 
@@ -46,6 +48,7 @@ namespace TheGame
         {
             //Load saved games?
             this.cont.interactable = this.savedGames.Count > 0; //Can't continue if no saved games
+            this.build.text = "TheGame v" + GameVersion.Version;
         }
         #endregion
     }
