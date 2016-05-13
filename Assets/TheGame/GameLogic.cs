@@ -29,19 +29,31 @@ namespace TheGame
         /// Loads and launches the game into the given scene
         /// </summary>
         /// <param name="scene">Scene to load</param>
-        internal void LoadScene(GameScenes scene) => SceneManager.LoadScene((int)scene);
+        internal void LoadScene(GameScenes scene)
+        {
+            Debug.Log("Loading scene: " + scene);
+            SceneManager.LoadScene((int)scene);
+        }
 
         /// <summary>
         /// Loads and launches the given scene atop of the current loaded scenes
         /// </summary>
         /// <param name="scene">Scene to load</param>
-        internal void LoadSceneLayered(GameScenes scene) => SceneManager.LoadScene((int)scene, LoadSceneMode.Additive);
+        internal void LoadSceneLayered(GameScenes scene)
+        {
+            Debug.Log("Loading layered scene: " + scene);
+            SceneManager.LoadScene((int)scene, LoadSceneMode.Additive);
+        }
 
         /// <summary>
         /// Unloads the given scene
         /// </summary>
         /// <param name="scene">Scene to unload</param>
-        internal void UnloadScene(GameScenes scene) => SceneManager.UnloadScene((int)scene);
+        internal void UnloadScene(GameScenes scene)
+        {
+            Debug.Log("Unloading scene: " + scene);
+            SceneManager.UnloadScene((int)scene);
+        }
         #endregion
 
         #region Functions

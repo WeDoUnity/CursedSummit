@@ -40,7 +40,7 @@ namespace TheGame
             yield return new WaitForSeconds(0.5f);
 
             Debug.Log("Loading finished, going to Menu");
-            GameLogic.Instance.LoadScene(GameScenes.LOADING);
+            GameLogic.Instance.LoadScene(GameScenes.MENU);
         }
         #endregion
 
