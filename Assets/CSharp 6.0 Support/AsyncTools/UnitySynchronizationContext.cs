@@ -2,7 +2,6 @@ using System;
 using System.Collections.Concurrent;
 using System.Collections.Generic;
 using System.Threading;
-//ReSharper disable All
 
 public class UnitySynchronizationContext : SynchronizationContext
 {
