@@ -141,6 +141,7 @@
   <ItemGroup>
     <None Include="Assets\CSharp 6.0 Support\AsyncTools\Plugins\AsyncBridge.Net35.xml" />
     <None Include="Assets\CSharp 6.0 Support\AsyncTools\Plugins\System.Threading.xml" />
+    <None Include="Assets\Plugins\Newtonsoft.Json.xml" />
     <None Include="Assets\StreamingAssets\desc.txt" />
     <None Include="Assets\Wwise\Readme.txt" />
     <None Include="Assets\Wwise\Version.txt" />
