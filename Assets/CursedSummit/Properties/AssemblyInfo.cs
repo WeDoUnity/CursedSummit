@@ -5,7 +5,7 @@ using System.Runtime.InteropServices;
 // set of attributes. Change these attribute values to modify the information
 // associated with an assembly.
 [assembly: AssemblyTitle("CursedSummit")]
-[assembly: AssemblyDescription("The long trek to the Cursed Summit!")]
+[assembly: AssemblyDescription("It's a long trek to the Cursed Summit")]
 [assembly: AssemblyCompany("WeDoUnity")]
 [assembly: AssemblyProduct("The Cursed Summit")]
 [assembly: AssemblyCopyright("Copyright © WeDoUnity 2016 - All Rights Reserved")]
