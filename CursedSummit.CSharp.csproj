@@ -13,7 +13,8 @@
     <TargetFrameworkIdentifier>.NETFramework</TargetFrameworkIdentifier>
     <TargetFrameworkVersion>v3.5</TargetFrameworkVersion>
     <TargetFrameworkProfile>Unity Subset v3.5</TargetFrameworkProfile>
-    <CompilerResponseFile></CompilerResponseFile>
+    <CompilerResponseFile>
+    </CompilerResponseFile>
     <UnityProjectType>Game:1</UnityProjectType>
     <UnityBuildTarget>StandaloneWindows64:19</UnityBuildTarget>
     <UnityVersion>5.3.4f1</UnityVersion>
@@ -79,7 +80,7 @@
     <Compile Include="Assets\CursedSummit\GameVersion.cs" />
     <Compile Include="Assets\CursedSummit\Menu.cs" />
     <Compile Include="Assets\CursedSummit\UI\Progressbar.cs" />
-    <Compile Include="Assets\Properties\AssemblyInfo.cs" />
+    <Compile Include="Assets\CursedSummit\Properties\AssemblyInfo.cs" />
     <Compile Include="Assets\Wwise\Deployment\API\Generated\Common\AKRESULT.cs" />
     <Compile Include="Assets\Wwise\Deployment\API\Generated\Common\AkActionOnEventType.cs" />
     <Compile Include="Assets\Wwise\Deployment\API\Generated\Common\AkAudioFormat.cs" />
