@@ -1,6 +1,7 @@
 ﻿using UnityEngine;
 using UnityEditor;
 using UnityEngine.SceneManagement;
+using UnityEngine.UI;
 
 namespace CursedSummit
 {
@@ -66,7 +67,7 @@ namespace CursedSummit
         #if UNITY_EDITOR
             EditorApplication.isPlaying = false;
         #else
-		    Application.Quit();
+            Application.Quit();
         #endif
         }
         #endregion
