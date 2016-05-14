@@ -1,0 +1,59 @@
+﻿using CursedSummit.Utils;
+using UnityEngine;
+using UnityEngine.EventSystems;
+
+namespace CursedSummit.UI
+{
+    [RequireComponent(typeof(RectTransform))]
+    public class PanelResize : MonoBehaviour, IPointerDownHandler, IDragHandler
+    {
+        #region Fields
+        [SerializeField]
+        private Vector2 min = new Vector2(100, 100);    //Min size
+        [SerializeField]
+        private Vector2 max = new Vector2(400, 400);    //Max size
+        private RectTransform panelTransform, parentTransform;
+        private Vector2 originalMousePos, originalSizeDelta;
+        #endregion
+
+        #region Methods
+        /// <summary>
+        /// Fires on mouse down over this transform
+        /// </summary>
+        /// <param name="data">Event data</param>
+        public void OnPointerDown(PointerEventData data)
+        {
+            this.originalSizeDelta = this.panelTransform.sizeDelta;
+            RectTransformUtility.ScreenPointToLocalPointInRectangle(this.panelTransform, data.position, data.pressEventCamera, out this.originalMousePos);
+        }
+
+        /// <summary>
+        /// Fires on mouse drag
+        /// </summary>
+        /// <param name="data">Event data</param>
+        public void OnDrag(PointerEventData data)
+        {
+            //Resize
+            Vector2 localMousePos;
+            RectTransformUtility.ScreenPointToLocalPointInRectangle(this.panelTransform, data.position, data.pressEventCamera, out localMousePos);
+            Vector2 offset = localMousePos - this.originalMousePos;
+            Vector2 sizeDelta = this.originalSizeDelta + new Vector2(offset.x, -offset.y);
+            sizeDelta = CSUtils.ClampVector2(sizeDelta, this.min, this.max);
+
+            //Make sure we're not outside of the draw zone
+            Vector2 pos = this.panelTransform.localPosition;
+            Vector2 bounds = new Vector2(this.parentTransform.rect.max.x - this.panelTransform.rect.max.x, this.parentTransform.rect.min.y - this.panelTransform.rect.min.y) - offset;
+            Vector2 currentDelta = this.panelTransform.sizeDelta;
+            this.panelTransform.sizeDelta = new Vector2(pos.x > bounds.x ? currentDelta.x : sizeDelta.x, pos.y < bounds.y ? currentDelta.y : sizeDelta.y);
+        }
+        #endregion
+
+        #region Functions
+        private void Awake()
+        {
+            this.panelTransform = (RectTransform)this.transform.parent;
+            this.parentTransform = (RectTransform)this.panelTransform.parent;
+        }
+        #endregion
+    }
+}

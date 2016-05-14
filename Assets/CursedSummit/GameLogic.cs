@@ -1,4 +1,5 @@
 ﻿using UnityEngine;
+using UnityEditor;
 using UnityEngine.SceneManagement;
 
 namespace CursedSummit
@@ -53,6 +54,20 @@ namespace CursedSummit
         {
             Debug.Log("Unloading scene: " + scene);
             SceneManager.UnloadScene((int)scene);
+        }
+        #endregion
+
+        #region Static methods
+        /// <summary>
+        /// Closes the instance of the game
+        /// </summary>
+        internal static void Quit()
+        {
+        #if UNITY_EDITOR
+            EditorApplication.isPlaying = false;
+        #else
+		    Application.Quit();
+        #endif
         }
         #endregion
 
