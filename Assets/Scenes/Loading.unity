@@ -181,6 +181,7 @@ RectTransform:
   m_Children:
   - {fileID: 1999486959}
   - {fileID: 1113003654}
+  - {fileID: 2126114944}
   - {fileID: 1033098226}
   - {fileID: 1524826433}
   m_Father: {fileID: 1992856188}
@@ -472,7 +473,7 @@ MonoBehaviour:
   m_HandleRect: {fileID: 373107066}
   m_Direction: 2
   m_Value: 1
-  m_Size: 0.673
+  m_Size: 0.65700006
   m_NumberOfSteps: 0
   m_OnValueChanged:
     m_PersistentCalls:
@@ -543,7 +544,7 @@ RectTransform:
   m_Children:
   - {fileID: 2074579992}
   m_Father: {fileID: 726829565}
-  m_RootOrder: 2
+  m_RootOrder: 3
   m_AnchorMin: {x: 1, y: 1}
   m_AnchorMax: {x: 1, y: 1}
   m_AnchoredPosition: {x: -7, y: -6.999995}
@@ -1139,11 +1140,11 @@ RectTransform:
   - {fileID: 2096856196}
   - {fileID: 970300473}
   m_Father: {fileID: 726829565}
-  m_RootOrder: 3
-  m_AnchorMin: {x: 0.5, y: 0.5}
-  m_AnchorMax: {x: 0.5, y: 0.5}
-  m_AnchoredPosition: {x: 0.000015258789, y: -3.600006}
-  m_SizeDelta: {x: 362.9, y: 218.9}
+  m_RootOrder: 4
+  m_AnchorMin: {x: 0, y: 0}
+  m_AnchorMax: {x: 1, y: 1}
+  m_AnchoredPosition: {x: 0, y: -4.5}
+  m_SizeDelta: {x: -4, y: -35}
   m_Pivot: {x: 0.5, y: 0.5}
 --- !u!114 &1524826434
 MonoBehaviour:
@@ -1360,7 +1361,7 @@ MonoBehaviour:
     m_Top: 2
     m_Bottom: 2
   m_ChildAlignment: 0
-  m_Spacing: 2
+  m_Spacing: 4
   m_ChildForceExpandWidth: 1
   m_ChildForceExpandHeight: 0
 --- !u!1 &1796824926
@@ -1587,7 +1588,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 7e04bc1a8afd0df4c9eb686413a003de, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  title: {fileID: 1999486962}
+  version: {fileID: 2126114946}
   window: {fileID: 726829564}
   logPrefab: {fileID: 111060, guid: 0741079e82b3a874bac440ceaea557ae, type: 2}
   layout: {fileID: 1775901562}
@@ -1624,7 +1625,7 @@ RectTransform:
   m_AnchorMin: {x: 0, y: 1}
   m_AnchorMax: {x: 1, y: 1}
   m_AnchoredPosition: {x: 0, y: -8.6}
-  m_SizeDelta: {x: 0, y: 20.2}
+  m_SizeDelta: {x: 0, y: 20}
   m_Pivot: {x: 0.5, y: 0.5}
 --- !u!114 &1999486960
 MonoBehaviour:
@@ -1675,7 +1676,7 @@ MonoBehaviour:
     m_HorizontalOverflow: 0
     m_VerticalOverflow: 0
     m_LineSpacing: 1
-  m_Text: Debug Window v
+  m_Text: Debug Window
 --- !u!1 &2074579991
 GameObject:
   m_ObjectHideFlags: 0
@@ -1864,3 +1865,76 @@ CanvasRenderer:
   m_PrefabParentObject: {fileID: 0}
   m_PrefabInternal: {fileID: 0}
   m_GameObject: {fileID: 2096856195}
+--- !u!1 &2126114943
+GameObject:
+  m_ObjectHideFlags: 0
+  m_PrefabParentObject: {fileID: 0}
+  m_PrefabInternal: {fileID: 0}
+  serializedVersion: 4
+  m_Component:
+  - 224: {fileID: 2126114944}
+  - 222: {fileID: 2126114945}
+  - 114: {fileID: 2126114946}
+  m_Layer: 5
+  m_Name: Version
+  m_TagString: Untagged
+  m_Icon: {fileID: 0}
+  m_NavMeshLayer: 0
+  m_StaticEditorFlags: 0
+  m_IsActive: 1
+--- !u!224 &2126114944
+RectTransform:
+  m_ObjectHideFlags: 0
+  m_PrefabParentObject: {fileID: 0}
+  m_PrefabInternal: {fileID: 0}
+  m_GameObject: {fileID: 2126114943}
+  m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
+  m_LocalPosition: {x: 0, y: 0, z: 0}
+  m_LocalScale: {x: 1, y: 1, z: 1}
+  m_Children: []
+  m_Father: {fileID: 726829565}
+  m_RootOrder: 2
+  m_AnchorMin: {x: 0, y: 0}
+  m_AnchorMax: {x: 1, y: 0}
+  m_AnchoredPosition: {x: -5.5000076, y: 7}
+  m_SizeDelta: {x: -14.999985, y: 13}
+  m_Pivot: {x: 0.5, y: 0.5}
+--- !u!222 &2126114945
+CanvasRenderer:
+  m_ObjectHideFlags: 0
+  m_PrefabParentObject: {fileID: 0}
+  m_PrefabInternal: {fileID: 0}
+  m_GameObject: {fileID: 2126114943}
+--- !u!114 &2126114946
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_PrefabParentObject: {fileID: 0}
+  m_PrefabInternal: {fileID: 0}
+  m_GameObject: {fileID: 2126114943}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 708705254, guid: f5f67c52d1564df4a8936ccd202a3bd8, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  m_Material: {fileID: 0}
+  m_Color: {r: 0, g: 0, b: 0, a: 1}
+  m_RaycastTarget: 1
+  m_OnCullStateChanged:
+    m_PersistentCalls:
+      m_Calls: []
+    m_TypeName: UnityEngine.UI.MaskableGraphic+CullStateChangedEvent, UnityEngine.UI,
+      Version=1.0.0.0, Culture=neutral, PublicKeyToken=null
+  m_FontData:
+    m_Font: {fileID: 10102, guid: 0000000000000000e000000000000000, type: 0}
+    m_FontSize: 9
+    m_FontStyle: 0
+    m_BestFit: 0
+    m_MinSize: 0
+    m_MaxSize: 40
+    m_Alignment: 5
+    m_AlignByGeometry: 0
+    m_RichText: 1
+    m_HorizontalOverflow: 0
+    m_VerticalOverflow: 0
+    m_LineSpacing: 1
+  m_Text: The Cursed Summit v
