@@ -1,4 +1,7 @@
 ﻿using System.Collections.Generic;
+using CursedSummit.Extensions;
+using CursedSummit.UI;
+using CursedSummit.Utils;
 using UnityEngine;
 using UnityEngine.UI;
 
@@ -53,10 +56,13 @@ namespace CursedSummit
             /// Logs an item to the queue (and automatically dequeues if the queue is full)
             /// </summary>
             /// <param name="item">Item to log</param>
-            public void Log(T item)
+            /// <returns>The automatically Dequeued item, if any, else the default value of <typeparamref name="T"/></returns>
+            public T Log(T item)
             {
-                if (!this.HasRoom) { Dequeue(); }
+                T removed = default(T);
+                if (!this.HasRoom) { removed = Dequeue(); }
                 base.Enqueue(item);
+                return removed;
             }
 
             /// <summary>
@@ -74,34 +80,64 @@ namespace CursedSummit
         public static DebugWindow Instance { get; private set; }
         #endregion
 
+        #region Static fields
+        private const int maxLogs = 500;
+        private static readonly Dictionary<LogType, Color> colours = new Dictionary<LogType, Color>(5)
+        {
+            { LogType.Log,       XKCDColours.White  },
+            { LogType.Warning,   XKCDColours.Yellow },
+            { LogType.Assert,    XKCDColours.Green  },
+            { LogType.Error,     XKCDColours.Orange },
+            { LogType.Exception, XKCDColours.Red    }
+        };
+        #endregion
+
         #region Fields
         [SerializeField]
-        private Text title;
+        private Text version;
         [SerializeField]
-        private GameObject window;
-        private readonly LogQueue<string> log = new LogQueue<string>(500);
+        private GameObject window, logPrefab;
+        [SerializeField]
+        private VerticalLayoutGroup layout;
+        private readonly LogQueue<GameObject> queue = new LogQueue<GameObject>(maxLogs);
         #endregion
 
         #region Properties
-        private bool visible;
         public bool Visible
         {
-            get { return this.visible; }
+            get { return this.window.activeSelf; }
             set
             {
-                if (value != this.visible)
+                if (value != this.window.activeSelf)
                 {
                     this.window.SetActive(value);
-                    this.visible = value;
                 }
+            }
+        }
+
+        private int index;
+        private int Index
+        {
+            get
+            {
+                if (this.index >= maxLogs) { this.index = 0; }
+                return this.index++;
             }
         }
         #endregion
 
         #region Methods
-        private void OnLog(string condition, string stackTrace, LogType type)
+        private void OnLog(string message, string stackTrace, LogType type)
         {
-            this.log.Log(condition);
+            if (stackTrace.Contains("Wwise")) { return; } //Okay so logging Wwise exception makes it go nuts... nice.
+
+            GameObject element = Instantiate(this.logPrefab);
+            element.name += this.Index;
+            element.transform.parent = this.layout.transform;
+            Text label = element.GetComponent<Text>();
+            label.text = message + (type == LogType.Exception ? stackTrace : string.Empty);
+            label.color = colours[type];
+            this.queue.Log(element)?.DestroyThis();
         }
         #endregion
 
@@ -113,7 +149,7 @@ namespace CursedSummit
             Instance = this;
             DontDestroyOnLoad(this);
 
-            this.title.text += GameVersion.VersionString;
+            this.version.text += GameVersion.VersionString;
             Application.logMessageReceived += OnLog;
         }
 

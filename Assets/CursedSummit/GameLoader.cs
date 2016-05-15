@@ -45,18 +45,21 @@ namespace CursedSummit
         #endregion
 
         #region Functions
+        private void Start()
+        {
+            Debug.Log("Running The Cursed Summit version " + GameVersion.VersionString);
+            this.loadingbar.SetLabel("Loading...");
+
+            //Start loading sequence
+            StartCoroutine(LoadComponents());
+        }
+
         private void Awake()
         {
             if (Instance != null) { Destroy(this); return; }
 
             Instance = this;
             DontDestroyOnLoad(this);
-
-            Debug.Log("Running TheGame version " + GameVersion.VersionString);
-            this.loadingbar.SetLabel("Loading...");
-
-            //Start loading sequence
-            StartCoroutine(LoadComponents());
         }
         #endregion
     }
