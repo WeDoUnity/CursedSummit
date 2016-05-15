@@ -42,6 +42,9 @@
   </PropertyGroup>
   <ItemGroup>
     <Reference Include="mscorlib" />
+    <Reference Include="Newtonsoft.Json">
+      <HintPath>Assets\Plugins\Newtonsoft.Json.dll</HintPath>
+    </Reference>
     <Reference Include="System" />
     <Reference Include="System.XML" />
     <Reference Include="System.Core" />
@@ -80,6 +83,8 @@
     <Compile Include="Assets\CursedSummit\GameLoader.cs" />
     <Compile Include="Assets\CursedSummit\GameLogic.cs" />
     <Compile Include="Assets\CursedSummit\GameVersion.cs" />
+    <Compile Include="Assets\CursedSummit\ILoader.cs" />
+    <Compile Include="Assets\CursedSummit\JsonLoader.cs" />
     <Compile Include="Assets\CursedSummit\Menu.cs" />
     <Compile Include="Assets\CursedSummit\Properties\AssemblyInfo.cs" />
     <Compile Include="Assets\CursedSummit\UI\PanelClose.cs" />

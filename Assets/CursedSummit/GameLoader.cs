@@ -1,4 +1,5 @@
-﻿using System.Collections.Generic;
+﻿using System.Collections;
+using System.Collections.Generic;
 using CursedSummit.UI;
 using UnityEngine;
 
@@ -18,7 +19,8 @@ namespace CursedSummit
 
         #region Fields
         [SerializeField]
-        private Progressbar loadingbar;    //Loading bar        
+        private Progressbar loadingbar;    //Loading bar     
+        private List<ILoader> loaders = new List<ILoader>();
         #endregion
 
         #region Methods
@@ -45,13 +47,16 @@ namespace CursedSummit
         #endregion
 
         #region Functions
-        private void Start()
+        private IEnumerator Start()
         {
             Debug.Log("Running The Cursed Summit version " + GameVersion.VersionString);
             this.loadingbar.SetLabel("Loading...");
 
-            //Start loading sequence
-            StartCoroutine(LoadComponents());
+            foreach (ILoader loader in this.loaders)
+            {
+                Debug.Log("Loading " + loader.Name);
+                yield return StartCoroutine(loader.LoadAll());
+            }
         }
 
         private void Awake()
@@ -60,6 +65,8 @@ namespace CursedSummit
 
             Instance = this;
             DontDestroyOnLoad(this);
+
+            //Get all Loaders to the list
         }
         #endregion
     }
