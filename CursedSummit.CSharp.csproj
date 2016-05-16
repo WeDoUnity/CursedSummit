@@ -1,4 +1,4 @@
-<?xml version="1.0" encoding="utf-8"?>
+﻿<?xml version="1.0" encoding="utf-8"?>
 <Project ToolsVersion="4.0" DefaultTargets="Build" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
   <PropertyGroup>
     <Configuration Condition=" '$(Configuration)' == '' ">Debug</Configuration>
@@ -81,11 +81,11 @@
     <Compile Include="Assets\CursedSummit\DebugWindow.cs" />
     <Compile Include="Assets\CursedSummit\Extensions\Extensions.cs" />
     <Compile Include="Assets\FileSystemEnumerator\FileSystemEnumerator.cs" />
-    <Compile Include="Assets\CursedSummit\GameLoader.cs" />
+    <Compile Include="Assets\CursedSummit\Loading\GameLoader.cs" />
     <Compile Include="Assets\CursedSummit\GameLogic.cs" />
     <Compile Include="Assets\CursedSummit\GameVersion.cs" />
-    <Compile Include="Assets\CursedSummit\ILoader.cs" />
-    <Compile Include="Assets\CursedSummit\JsonLoader.cs" />
+    <Compile Include="Assets\CursedSummit\Loading\ILoader.cs" />
+    <Compile Include="Assets\CursedSummit\Loading\JsonLoader.cs" />
     <Compile Include="Assets\CursedSummit\Menu.cs" />
     <Compile Include="Assets\CursedSummit\Properties\AssemblyInfo.cs" />
     <Compile Include="Assets\CursedSummit\UI\ExpandableText.cs" />

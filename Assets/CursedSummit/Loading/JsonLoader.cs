@@ -1,10 +1,9 @@
-﻿using System;
-using System.Collections;
+﻿using System.Collections;
 using System.Collections.Generic;
 using System.IO;
 using Newtonsoft.Json;
 
-namespace CursedSummit
+namespace CursedSummit.Loading
 {
     public abstract class JsonLoader<T> : IJsonLoader<T>, IEnumerable<T>
     {

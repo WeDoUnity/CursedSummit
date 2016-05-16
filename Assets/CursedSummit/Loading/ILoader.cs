@@ -1,7 +1,7 @@
 ﻿using System.Collections.Generic;
 using System.IO;
 
-namespace CursedSummit
+namespace CursedSummit.Loading
 {
     /// <summary>
     /// ILoader coroutine instruction
