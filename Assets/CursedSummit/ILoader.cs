@@ -1,7 +1,16 @@
-﻿using System.Collections;
+﻿using System.Collections.Generic;
 
 namespace CursedSummit
 {
+    /// <summary>
+    /// ILoader coroutine instruction
+    /// </summary>
+    public enum LoaderInstruction
+    {
+        CONTINUE = 0,
+        BREAK = 1
+    }
+
     public interface ILoader
     {
         #region Properties
@@ -16,6 +25,11 @@ namespace CursedSummit
         int Current { get; }
 
         /// <summary>
+        /// Current loader status string
+        /// </summary>
+        string Status { get; }
+
+        /// <summary>
         /// Name of the loader
         /// </summary>
         string Name { get; }
@@ -26,7 +40,7 @@ namespace CursedSummit
         /// Coroutine enumerator loading all the relevant files
         /// </summary>
         /// <returns>The loading coroutine</returns>
-        IEnumerator LoadAll();
+        IEnumerator<LoaderInstruction> LoadAll();
         #endregion
     }
 }

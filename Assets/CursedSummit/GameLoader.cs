@@ -1,6 +1,8 @@
 ﻿using System.Collections;
 using System.Collections.Generic;
+using System.IO;
 using CursedSummit.UI;
+using CursedSummit.Utils;
 using UnityEngine;
 
 namespace CursedSummit
@@ -15,6 +17,10 @@ namespace CursedSummit
         /// General instance of the GameLoader
         /// </summary>
         public static GameLoader Instance { get; private set; }
+        #endregion
+
+        #region Constants
+        public const string folderName = "CSData";
         #endregion
 
         #region Fields
@@ -52,10 +58,19 @@ namespace CursedSummit
             Debug.Log("Running The Cursed Summit version " + GameVersion.VersionString);
             this.loadingbar.SetLabel("Loading...");
 
+            string localPath = Path.Combine(CSUtils.RootPath, folderName);
+
             foreach (ILoader loader in this.loaders)
             {
                 Debug.Log("Loading " + loader.Name);
-                yield return StartCoroutine(loader.LoadAll());
+                using (IEnumerator<LoaderInstruction> e = loader.LoadAll())
+                {
+                    while (e.MoveNext())
+                    {
+                        if (e.Current == LoaderInstruction.BREAK) { break; }
+                        yield return null;
+                    }
+                }
             }
         }
 

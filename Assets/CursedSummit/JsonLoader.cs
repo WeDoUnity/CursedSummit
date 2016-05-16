@@ -1,5 +1,4 @@
 ﻿using System;
-using System.Collections;
 using System.Collections.Generic;
 using System.IO;
 using Newtonsoft.Json;
@@ -22,6 +21,8 @@ namespace CursedSummit
         #region Abstract properties
         public abstract string Name { get; }
 
+        public abstract string Status { get; }
+
         public abstract string Extension { get; }
         #endregion
 
@@ -36,7 +37,7 @@ namespace CursedSummit
             return this.objects.Find(filter);
         }
         
-        public IEnumerator LoadAll()
+        public IEnumerator<LoaderInstruction> LoadAll()
         {
             string[] ext = { this.Extension };
             yield break; //Temp to prevent errors
@@ -57,16 +58,6 @@ namespace CursedSummit
            *}
            */
         }
-        #endregion
-    }
-
-    //Exemple class
-    public class JsonVersion : JsonLoader<Version>
-    {
-        #region Properties
-        public override string Name => "Version";
-
-        public override string Extension => ".version";
         #endregion
     }
 }

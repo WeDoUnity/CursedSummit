@@ -1,10 +1,15 @@
-﻿using UnityEngine;
+﻿using System.IO;
+using UnityEngine;
 using static UnityEngine.Mathf;
 
 namespace CursedSummit.Utils
 {
     public static class CSUtils
     {
+        #region Static properties
+        public static string RootPath { get; } = Path.Combine(Application.dataPath, "/../");
+        #endregion
+
         #region Static methods
         /// <summary>
         /// Clamps a given Vector2 between a set of minimum and maximum values
