@@ -9,6 +9,7 @@ using UnityEngine;
 using UnityEditor;
 using System;
 using System.Reflection;
+#pragma warning disable 169
 
 [CanEditMultipleObjects]
 [CustomEditor(typeof(AkSwitch))]
