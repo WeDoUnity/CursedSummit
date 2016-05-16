@@ -1,5 +1,8 @@
-﻿using System.Collections.Generic;
+﻿using System.Collections;
+using System.Collections.Generic;
+using System.IO;
 using CursedSummit.UI;
+using CursedSummit.Utils;
 using UnityEngine;
 
 namespace CursedSummit
@@ -16,9 +19,14 @@ namespace CursedSummit
         public static GameLoader Instance { get; private set; }
         #endregion
 
+        #region Constants
+        public const string folderName = "CSData";
+        #endregion
+
         #region Fields
         [SerializeField]
-        private Progressbar loadingbar;    //Loading bar        
+        private Progressbar loadingbar;    //Loading bar     
+        private List<ILoader> loaders = new List<ILoader>();
         #endregion
 
         #region Methods
@@ -45,6 +53,27 @@ namespace CursedSummit
         #endregion
 
         #region Functions
+        private IEnumerator Start()
+        {
+            Debug.Log("Running The Cursed Summit version " + GameVersion.VersionString);
+            this.loadingbar.SetLabel("Loading...");
+
+            string localPath = Path.Combine(CSUtils.RootPath, folderName);
+
+            foreach (ILoader loader in this.loaders)
+            {
+                Debug.Log("Loading " + loader.Name);
+                using (IEnumerator<LoaderInstruction> e = loader.LoadAll())
+                {
+                    while (e.MoveNext())
+                    {
+                        if (e.Current == LoaderInstruction.BREAK) { break; }
+                        yield return null;
+                    }
+                }
+            }
+        }
+
         private void Awake()
         {
             if (Instance != null) { Destroy(this); return; }
@@ -52,11 +81,7 @@ namespace CursedSummit
             Instance = this;
             DontDestroyOnLoad(this);
 
-            Debug.Log("Running TheGame version " + GameVersion.VersionString);
-            this.loadingbar.SetLabel("Loading...");
-
-            //Start loading sequence
-            StartCoroutine(LoadComponents());
+            //Get all Loaders to the list
         }
         #endregion
     }

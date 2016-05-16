@@ -61,7 +61,7 @@ namespace CursedSummit
         /// <summary>
         /// Quit button event
         /// </summary>
-        public void OnQuit() => Application.Quit();
+        public void OnQuit() => GameLogic.Quit();
         #endregion
 
         #region Functions
