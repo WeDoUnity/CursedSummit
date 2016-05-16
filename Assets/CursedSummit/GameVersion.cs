@@ -14,11 +14,11 @@ namespace CursedSummit
         /// <summary>
         /// Name of the BuildID file
         /// </summary>
-        private const string buildFile = "buildID.build";
+        private const string BuildFile = "buildID.build";
         /// <summary>
         /// Separator of the build time and version number
         /// </summary>
-        private static readonly string[] delim = { "UTC|v" };
+        private static readonly string[] Delim = { "UTC|v" };
         #endregion
 
         #region Static properties
@@ -58,11 +58,11 @@ namespace CursedSummit
         /// </summary>
         static GameVersion()
         {
-            string path = Path.Combine(Application.dataPath, buildFile);
+            string path = Path.Combine(Application.dataPath, BuildFile);
             string[] info;
             try
             {
-                info = File.ReadAllLines(path)[0].Split(delim, StringSplitOptions.RemoveEmptyEntries);
+                info = File.ReadAllLines(path)[0].Split(Delim, StringSplitOptions.RemoveEmptyEntries);
             }
             catch (Exception e)
             {

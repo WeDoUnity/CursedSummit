@@ -112,9 +112,9 @@ namespace CursedSummit
 
         #region Constants
         // Max amount of saved log messages
-        private const int maxLogs = 500;
+        private const int MaxLogs = 500;
         //LogType -> Color conversion dictionary
-        private static readonly Dictionary<LogType, Color> colours = new Dictionary<LogType, Color>(5)
+        private static readonly Dictionary<LogType, Color> Colours = new Dictionary<LogType, Color>(5)
         {
             { LogType.Log,       XKCDColours.White  },
             { LogType.Warning,   XKCDColours.Yellow },
@@ -132,7 +132,7 @@ namespace CursedSummit
         [SerializeField]
         private VerticalLayoutGroup layout;     //Log layout group
         private List<TempLog> preLogs = new List<TempLog>();                                //Logs posted before the window was correctly initiated
-        private readonly LogQueue<GameObject> queue = new LogQueue<GameObject>(maxLogs);    //Queue of saved logs
+        private readonly LogQueue<GameObject> queue = new LogQueue<GameObject>(MaxLogs);    //Queue of saved logs
         #endregion
 
         #region Properties
@@ -165,7 +165,7 @@ namespace CursedSummit
 
             GameObject element = Instantiate(this.logPrefab);
             element.transform.SetParent(this.layout.transform);
-            element.GetComponent<ExpandableText>().SetText(message, message + (type == LogType.Exception ? stackTrace : string.Empty), colours[type]);
+            element.GetComponent<ExpandableText>().SetText(message, message + (type == LogType.Exception ? stackTrace : string.Empty), Colours[type]);
             this.queue.Log(element)?.DestroyThis();
         }
 
