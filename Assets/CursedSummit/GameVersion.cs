@@ -1,4 +1,5 @@
 ﻿using System;
+using System.Globalization;
 using System.IO;
 using UnityEngine;
 
@@ -14,6 +15,10 @@ namespace CursedSummit
         /// Name of the BuildID file
         /// </summary>
         private const string buildFile = "buildID.build";
+        /// <summary>
+        /// Separator of the build time and version number
+        /// </summary>
+        private static readonly string[] delim = { "UTC|v" };
         #endregion
 
         #region Static properties
@@ -41,6 +46,10 @@ namespace CursedSummit
         /// Current game version
         /// </summary>
         public static Version Version { get; }
+        /// <summary>
+        /// UTC time of the Build
+        /// </summary>
+        public static DateTime BuildTime { get; }
         #endregion
 
         #region Constructors
@@ -50,21 +59,24 @@ namespace CursedSummit
         static GameVersion()
         {
             string path = Path.Combine(Application.dataPath, buildFile);
+            string[] info;
             try
             {
-                VersionString = File.ReadAllLines(path)[0].Split('|')[1];
+                info = File.ReadAllLines(path)[0].Split(delim, StringSplitOptions.RemoveEmptyEntries);
             }
             catch (Exception e)
             {
                 throw new FileNotFoundException("GameVersion could not properly load BuildID", path, e);
             }
-            VersionString = File.ReadAllLines(path)[0].Split('|')[1];
+
+            BuildTime = DateTime.SpecifyKind(DateTime.ParseExact(info[0], "yyyy-MM-dd HH:mm:ss", CultureInfo.InvariantCulture), DateTimeKind.Utc);
+            VersionString = info[1];
             Version = new Version(VersionString);
-            string[] versionNumbers = VersionString.Split('.');
-            Major    = int.Parse(versionNumbers[0]);
-            Minor    = int.Parse(versionNumbers[1]);
-            Build    = int.Parse(versionNumbers[2]);
-            Revision = int.Parse(versionNumbers[3]);
+
+            Major    = Version.Major;
+            Minor    = Version.Minor;
+            Build    = Version.Build;
+            Revision = Version.Revision;
         }
         #endregion
     }

@@ -22,6 +22,10 @@ namespace CursedSummit.Editor
         /// Game build folder path of the BuildID file
         /// </summary>
         private const string buildFile = "_Data/buildID.build";
+        /// <summary>
+        /// Separator of the build time and version number
+        /// </summary>
+        private static readonly string[] delim = { "UTC|v" };
         #endregion
 
         #region Static fields
@@ -44,7 +48,7 @@ namespace CursedSummit.Editor
         /// </summary>
         public static string CurrentDate
         {
-            get { return DateTime.Now.ToString("yyyy-MM-dd HH:mm:ss", CultureInfo.InvariantCulture); }
+            get { return DateTime.UtcNow.ToString("yyyy-MM-dd HH:mm:ss", CultureInfo.InvariantCulture); }
         }
         #endregion
 
@@ -57,9 +61,9 @@ namespace CursedSummit.Editor
             path = Path.Combine(Application.dataPath, file);
             if (File.Exists(path))
             {
-                string[] lines = File.ReadAllLines(path)[0].Split('|');
-                string[] version = lines[1].Split('.');
-                date = lines[0];
+                string[] info = File.ReadAllLines(path)[0].Split(delim, StringSplitOptions.RemoveEmptyEntries);
+                date = info[0];
+                string[] version = info[1].Split('.');
                 major = int.Parse(version[0]);
                 minor = int.Parse(version[1]);
                 build = int.Parse(version[2]);
@@ -85,8 +89,8 @@ namespace CursedSummit.Editor
             revision++;
             date = CurrentDate;
             string buildID = Version;
-            Debug.Log(string.Format("Built version {0}, at {1}", buildID, date));
-            string[] lines =  { date + "|" + buildID };
+            Debug.Log(string.Format("Built version v{0}, at {1}UTC", buildID, date));
+            string[] lines =  { date + "UTC|v" + buildID };
             File.WriteAllLines(path, lines);
             File.WriteAllLines(Path.ChangeExtension(pathToBuild, null) + buildFile, lines);
         }
@@ -158,8 +162,8 @@ namespace CursedSummit.Editor
         public static void SaveVersion()
         {
             string buildID = Version;
-            Debug.Log("Saving version " + buildID);
-            File.WriteAllLines(path, new[] { date + "|" + buildID });
+            Debug.Log("Saving version v" + buildID);
+            File.WriteAllLines(path, new[] { date + "UTC|v" + buildID });
         }
 
         /// <summary>
@@ -168,7 +172,7 @@ namespace CursedSummit.Editor
         private static void LogVersion()
         {
             date = CurrentDate;
-            Debug.Log("Current version: " + Version);
+            Debug.Log("Current version: v" + Version);
         }
         #endregion
     }

@@ -96,6 +96,9 @@
     <Reference Include="CSharp60Support">
       <HintPath>Assets\CSharp 6.0 Support\Editor\CSharp60Support.dll</HintPath>
     </Reference>
+    <Reference Include="Newtonsoft.Json">
+      <HintPath>Assets\Plugins\Newtonsoft.Json.dll</HintPath>
+    </Reference>
   </ItemGroup>
   <ItemGroup>
     <ProjectReference Include="CursedSummit.CSharp.csproj">
