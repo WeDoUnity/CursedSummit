@@ -129,7 +129,7 @@ namespace CursedSummit
         #region Methods
         private void OnLog(string message, string stackTrace, LogType type)
         {
-            if (stackTrace.Contains("Wwise")) { return; } //Okay so logging Wwise exception makes it go nuts... nice.
+            //if (stackTrace.Contains("Wwise")) { return; } //Okay so logging Wwise exception makes it go nuts... nice.
 
             GameObject element = Instantiate(this.logPrefab);
             element.name += this.Index;

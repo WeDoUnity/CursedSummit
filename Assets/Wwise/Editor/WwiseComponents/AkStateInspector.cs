@@ -8,7 +8,6 @@
 using UnityEngine;
 using UnityEditor;
 using System;
-#pragma warning disable 169
 
 [CanEditMultipleObjects]
 [CustomEditor(typeof(AkState))]

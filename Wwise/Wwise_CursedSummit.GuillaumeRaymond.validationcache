@@ -1,0 +1,26 @@
+<?xml version="1.0" encoding="utf-8"?>
+<ValidationCache Version="1" SchemaVersion="70">
+	<ValidationCacheItem File="C:\Users\GuillaumeRaymond\Documents\GitHub\CursedSummit\Wwise\Actor-Mixer Hierarchy\Default Work Unit.wwu" DateLow="1270543708" DateHigh="30519064"/>
+	<ValidationCacheItem File="C:\Users\GuillaumeRaymond\Documents\GitHub\CursedSummit\Wwise\Attenuations\Default Work Unit.wwu" DateLow="1270553720" DateHigh="30519064"/>
+	<ValidationCacheItem File="C:\Users\GuillaumeRaymond\Documents\GitHub\CursedSummit\Wwise\Control Surface Sessions\Default Work Unit.wwu" DateLow="1270966295" DateHigh="30519064"/>
+	<ValidationCacheItem File="C:\Users\GuillaumeRaymond\Documents\GitHub\CursedSummit\Wwise\Conversion Settings\Default Work Unit.wwu" DateLow="1270976314" DateHigh="30519064"/>
+	<ValidationCacheItem File="C:\Users\GuillaumeRaymond\Documents\GitHub\CursedSummit\Wwise\Conversion Settings\Factory Conversion Settings.wwu" DateLow="1270976314" DateHigh="30519064"/>
+	<ValidationCacheItem File="C:\Users\GuillaumeRaymond\Documents\GitHub\CursedSummit\Wwise\Dynamic Dialogue\Default Work Unit.wwu" DateLow="1270986422" DateHigh="30519064"/>
+	<ValidationCacheItem File="C:\Users\GuillaumeRaymond\Documents\GitHub\CursedSummit\Wwise\Effects\Default Work Unit.wwu" DateLow="1270996421" DateHigh="30519064"/>
+	<ValidationCacheItem File="C:\Users\GuillaumeRaymond\Documents\GitHub\CursedSummit\Wwise\Effects\Factory Effects.wwu" DateLow="1271036375" DateHigh="30519064"/>
+	<ValidationCacheItem File="C:\Users\GuillaumeRaymond\Documents\GitHub\CursedSummit\Wwise\Events\Default Work Unit.wwu" DateLow="1271046373" DateHigh="30519064"/>
+	<ValidationCacheItem File="C:\Users\GuillaumeRaymond\Documents\GitHub\CursedSummit\Wwise\Game Parameters\Default Work Unit.wwu" DateLow="1271056378" DateHigh="30519064"/>
+	<ValidationCacheItem File="C:\Users\GuillaumeRaymond\Documents\GitHub\CursedSummit\Wwise\Interactive Music Hierarchy\Default Work Unit.wwu" DateLow="1271096403" DateHigh="30519064"/>
+	<ValidationCacheItem File="C:\Users\GuillaumeRaymond\Documents\GitHub\CursedSummit\Wwise\Master-Mixer Hierarchy\Default Work Unit.wwu" DateLow="1271096403" DateHigh="30519064"/>
+	<ValidationCacheItem File="C:\Users\GuillaumeRaymond\Documents\GitHub\CursedSummit\Wwise\Mixing Sessions\Default Work Unit.wwu" DateLow="1271106408" DateHigh="30519064"/>
+	<ValidationCacheItem File="C:\Users\GuillaumeRaymond\Documents\GitHub\CursedSummit\Wwise\Modulators\Default Work Unit.wwu" DateLow="1271116414" DateHigh="30519064"/>
+	<ValidationCacheItem File="C:\Users\GuillaumeRaymond\Documents\GitHub\CursedSummit\Wwise\Presets\Default Work Unit.wwu" DateLow="1271116414" DateHigh="30519064"/>
+	<ValidationCacheItem File="C:\Users\GuillaumeRaymond\Documents\GitHub\CursedSummit\Wwise\Queries\Default Work Unit.wwu" DateLow="1271126419" DateHigh="30519064"/>
+	<ValidationCacheItem File="C:\Users\GuillaumeRaymond\Documents\GitHub\CursedSummit\Wwise\Queries\Factory Queries.wwu" DateLow="1271126419" DateHigh="30519064"/>
+	<ValidationCacheItem File="C:\Users\GuillaumeRaymond\Documents\GitHub\CursedSummit\Wwise\SoundBanks\Default Work Unit.wwu" DateLow="1271136431" DateHigh="30519064"/>
+	<ValidationCacheItem File="C:\Users\GuillaumeRaymond\Documents\GitHub\CursedSummit\Wwise\Soundcaster Sessions\Default Work Unit.wwu" DateLow="1271146440" DateHigh="30519064"/>
+	<ValidationCacheItem File="C:\Users\GuillaumeRaymond\Documents\GitHub\CursedSummit\Wwise\States\Default Work Unit.wwu" DateLow="1271146440" DateHigh="30519064"/>
+	<ValidationCacheItem File="C:\Users\GuillaumeRaymond\Documents\GitHub\CursedSummit\Wwise\Switches\Default Work Unit.wwu" DateLow="1271156449" DateHigh="30519064"/>
+	<ValidationCacheItem File="C:\Users\GuillaumeRaymond\Documents\GitHub\CursedSummit\Wwise\Triggers\Default Work Unit.wwu" DateLow="1271462529" DateHigh="30519064"/>
+	<ValidationCacheItem File="C:\Users\GuillaumeRaymond\Documents\GitHub\CursedSummit\Wwise\Wwise_CursedSummit.wproj" DateLow="1271502586" DateHigh="30519064"/>
+</ValidationCache>
