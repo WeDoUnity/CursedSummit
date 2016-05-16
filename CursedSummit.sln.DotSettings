@@ -1,11 +1,9 @@
 ﻿<wpf:ResourceDictionary xml:space="preserve" xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml" xmlns:s="clr-namespace:System;assembly=mscorlib" xmlns:ss="urn:shemas-jetbrains-com:settings-storage-xaml" xmlns:wpf="http://schemas.microsoft.com/winfx/2006/xaml/presentation">
-	<s:String x:Key="/Default/CodeInspection/ExcludedFiles/FilesAndFoldersToSkip2/=03D22B2F_002DD2D0_002D8BD2_002D09FE_002D5DCB6BDD6E95_002Fd_003AAssets_002Fd_003ACSharp_00206_002E0_0020Support/@EntryIndexedValue">ExplicitlyExcluded</s:String>
-	<s:String x:Key="/Default/CodeInspection/ExcludedFiles/FilesAndFoldersToSkip2/=03D22B2F_002DD2D0_002D8BD2_002D09FE_002D5DCB6BDD6E95_002Fd_003AAssets_002Fd_003AWwise/@EntryIndexedValue">ExplicitlyExcluded</s:String>
-	<s:String x:Key="/Default/CodeInspection/ExcludedFiles/FilesAndFoldersToSkip2/=C78B1BEB_002D3442_002D493B_002D2AC5_002D749832AAE4E7_002Fd_003AAssets_002Fd_003ACSharp_00206_002E0_0020Support/@EntryIndexedValue">ExplicitlyExcluded</s:String>
-	<s:String x:Key="/Default/CodeInspection/ExcludedFiles/FilesAndFoldersToSkip2/=C78B1BEB_002D3442_002D493B_002D2AC5_002D749832AAE4E7_002Fd_003AAssets_002Fd_003AWwise/@EntryIndexedValue">ExplicitlyExcluded</s:String>
-	<s:String x:Key="/Default/CodeInspection/Highlighting/InspectionSeverities/=CSharpWarnings_003A_003ACS1591/@EntryIndexedValue"></s:String>
-	<s:Boolean x:Key="/Default/CodeInspection/Highlighting/InspectionSeverities/=CSharpWarnings_003A_003ACS1591/@EntryIndexRemoved">True</s:Boolean>
-	<s:String x:Key="/Default/CodeInspection/Highlighting/InspectionSeverities/=UnassignedField_002ECompiler/@EntryIndexedValue">SUGGESTION</s:String>
+	<s:String x:Key="/Default/CodeInspection/ExcludedFiles/FilesAndFoldersToSkip2/=2B1B2A7A_002D58DB_002D818B_002D89A3_002D3007035EAE4D_002Fd_003AAssets_002Fd_003ACSharp_00206_002E0_0020Support/@EntryIndexedValue">ExplicitlyExcluded</s:String>
+	<s:String x:Key="/Default/CodeInspection/ExcludedFiles/FilesAndFoldersToSkip2/=2B1B2A7A_002D58DB_002D818B_002D89A3_002D3007035EAE4D_002Fd_003AAssets_002Fd_003AFileSystemEnumerator/@EntryIndexedValue">ExplicitlyExcluded</s:String>
+	<s:String x:Key="/Default/CodeInspection/ExcludedFiles/FilesAndFoldersToSkip2/=2B1B2A7A_002D58DB_002D818B_002D89A3_002D3007035EAE4D_002Fd_003AAssets_002Fd_003AWwise/@EntryIndexedValue">ExplicitlyExcluded</s:String>
+	<s:String x:Key="/Default/CodeInspection/ExcludedFiles/FilesAndFoldersToSkip2/=8999BF41_002DCCE0_002D25CE_002D02F3_002D5CBCEE1D965F_002Fd_003AAssets_002Fd_003ACSharp_00206_002E0_0020Support/@EntryIndexedValue">ExplicitlyExcluded</s:String>
+	<s:String x:Key="/Default/CodeInspection/ExcludedFiles/FilesAndFoldersToSkip2/=8999BF41_002DCCE0_002D25CE_002D02F3_002D5CBCEE1D965F_002Fd_003AAssets_002Fd_003AWwise/@EntryIndexedValue">ExplicitlyExcluded</s:String>
 	<s:String x:Key="/Default/CodeStyle/Naming/CSharpNaming/Abbreviations/=CS/@EntryIndexedValue">CS</s:String>
 	<s:String x:Key="/Default/CodeStyle/Naming/CSharpNaming/Abbreviations/=GUI/@EntryIndexedValue">GUI</s:String>
 	<s:String x:Key="/Default/CodeStyle/Naming/CSharpNaming/Abbreviations/=ID/@EntryIndexedValue">ID</s:String>
