@@ -6,6 +6,7 @@ namespace CursedSummit.UI
     /// <summary>
     /// A generic Progressbar helper class
     /// </summary>
+    [AddComponentMenu("UI/Progressbar")]
     public class Progressbar : MonoBehaviour
     {
         #region Fields

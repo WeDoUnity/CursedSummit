@@ -17,6 +17,7 @@ namespace CursedSummit
     /// <summary>
     /// General Game utility logic. Access through instance member
     /// </summary>
+    [DisallowMultipleComponent]
     public class GameLogic : MonoBehaviour
     {
         #region Instance

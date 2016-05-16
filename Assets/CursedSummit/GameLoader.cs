@@ -10,6 +10,7 @@ namespace CursedSummit
     /// <summary>
     /// General Game loader (nothing really implemented, only a framework skeleton)
     /// </summary>
+    [DisallowMultipleComponent]
     public class GameLoader : MonoBehaviour
     {
         #region Instance
