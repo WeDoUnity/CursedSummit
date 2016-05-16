@@ -190,7 +190,7 @@ namespace CursedSummit
             DontDestroyOnLoad(this);
 
             Application.logMessageReceived += OnLogDelayed;
-            Debug.Log("Starting debug window");
+            Debug.Log("Running The Cursed Summit version " + GameVersion.VersionString);
             this.version.text += GameVersion.VersionString;
         }
 

@@ -1,9 +1,12 @@
 ﻿using System.Collections;
 using System.Collections.Generic;
+using System.Diagnostics;
 using System.IO;
 using CursedSummit.UI;
 using CursedSummit.Utils;
 using UnityEngine;
+using FindFiles;
+using Debug = UnityEngine.Debug;
 
 namespace CursedSummit
 {
@@ -28,6 +31,8 @@ namespace CursedSummit
         [SerializeField]
         private Progressbar loadingbar;    //Loading bar     
         private List<ILoader> loaders = new List<ILoader>();
+        private List<FileInfo> allFiles = new List<FileInfo>();
+        private Dictionary<string, List<FileInfo>> extensions = new Dictionary<string, List<FileInfo>>();
         #endregion
 
         #region Methods
@@ -56,15 +61,44 @@ namespace CursedSummit
         #region Functions
         private IEnumerator Start()
         {
-            Debug.Log("Running The Cursed Summit version " + GameVersion.VersionString);
-            this.loadingbar.SetLabel("Loading...");
-
+            Stopwatch watch = Stopwatch.StartNew();
             string localPath = Path.Combine(CSUtils.RootPath, folderName);
+            if (!Directory.Exists(localPath))
+            {
+                Debug.LogWarning("[GameLoader]: CSData folder could not be located. Creating new one.");
+                Directory.CreateDirectory(localPath);
+            }
 
+            using (FileSystemEnumerator e = new FileSystemEnumerator(localPath, "*", true))
+            {
+                foreach (FileInfo file in e.Matches())
+                {
+                    this.loadingbar.SetLabel("Locating file " + file.FullName);
+
+                    this.allFiles.Add(file);
+                    List<FileInfo> files;
+                    if (!this.extensions.TryGetValue(file.Extension, out files))
+                    {
+                        files = new List<FileInfo>();
+                        this.extensions.Add(file.Extension, files);
+                    }
+
+                    files.Add(file);
+                    Debug.Log("[GameLoader]: Located " + file.FullName);
+                    yield return null;
+                }
+            }
+
+            watch.Stop();
+            Debug.Log($"[GameLoader]: Found {this.allFiles.Count} files in {watch.Elapsed.TotalSeconds}s");
+
+            watch.Reset();
+            watch.Start();
             foreach (ILoader loader in this.loaders)
             {
-                Debug.Log("Loading " + loader.Name);
-                using (IEnumerator<LoaderInstruction> e = loader.LoadAll())
+                Debug.Log("[GameLoader]: Starting loader " + loader.Name);
+                List<FileInfo> files;
+                using (IEnumerator<LoaderInstruction> e = loader.LoadAll(new List<FileInfo>())) //TODO: put the right list here
                 {
                     while (e.MoveNext())
                     {
