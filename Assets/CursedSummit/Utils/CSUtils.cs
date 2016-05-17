@@ -34,7 +34,7 @@ namespace CursedSummit.Utils
         /// </summary>
         static CSUtils()
         {
-            RootPath = Path.Combine(Application.dataPath, "/../");
+            RootPath = Path.Combine(Application.dataPath, "../");
             CSDataPath = Path.Combine(RootPath, CSDataFolderName);
         }
         #endregion
