@@ -68,7 +68,7 @@ namespace CursedSummit.Loading
         /// <summary>
         /// List of all objects loaded by this loader
         /// </summary>
-        List<T> Objects { get; }
+        LoaderList<T> LoadedObjects { get; }
         #endregion
     }
 
@@ -92,13 +92,13 @@ namespace CursedSummit.Loading
     /// Generic typed Json loader interface
     /// </summary>
     /// <typeparam name="T">Json object typed loaded by this</typeparam>
-    public interface IJsonLoader<T> : IJsonLoader, ILoader<T>
+    public interface IJsonLoader<T> : IJsonLoader
     {
         #region Properties
         /// <summary>
         /// Dictionary mapping file path => loaded Json object
         /// </summary>
-        Dictionary<string, T[]> Files { get; }
+        JsonLoaderList<T> LoadedObjects { get; }
         #endregion
     }
 }
