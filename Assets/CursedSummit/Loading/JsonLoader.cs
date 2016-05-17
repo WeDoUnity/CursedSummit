@@ -1,6 +1,9 @@
-﻿using System.Collections.Generic;
+﻿using System;
+using System.Collections.Generic;
 using System.IO;
 using Newtonsoft.Json;
+using UnityEngine;
+using static CursedSummit.Loading.LoaderInstruction;
 
 //TODO: Switch to local path
 namespace CursedSummit.Loading
@@ -72,16 +75,37 @@ namespace CursedSummit.Loading
             List<T> objects = new List<T>();
             Dictionary<string, T[]> paths = new Dictionary<string, T[]>();
             this.current = -1;
+            LoaderInstruction inst = CONTINUE;
             foreach (FileInfo file in files)
             {
-                string data = file.ReadFile();
-                yield return LoaderInstruction.CONTINUE;
+                string data;
+                try
+                {
+                    data = file.ReadFile();
+                }
+                catch (Exception e)
+                {
+                    Debug.LogError($"[{this.Name}JsonLoader]: Encountered an exception reading file {file.FullName}.\n{e.GetType().Name}\n{e.StackTrace}");
+                    data = null;
+                    inst = BREAK;
+                }
+                yield return inst;
 
-                T[] array = JsonConvert.DeserializeObject<T[]>(data);
+                T[] array;
+                try
+                {
+                    array = JsonConvert.DeserializeObject<T[]>(data);
+                }
+                catch (Exception e)
+                {
+                    Debug.LogError($"[{this.Name}JsonLoader]: Encountered an exception loading object {file.FullName}.\n{e.GetType().Name}\n{e.StackTrace}");
+                    array = null;
+                    inst = BREAK;
+                }
+                yield return inst;
                 paths.Add(file.FullName, array);
                 objects.AddRange(array);
                 this.current++;
-                yield return LoaderInstruction.CONTINUE;
             }
             this.LoadedObjects = new JsonLoaderList<T>(objects, paths);
             this.Loaded = true;

@@ -1,5 +1,8 @@
-﻿using System.Collections.Generic;
+﻿using System;
+using System.Collections.Generic;
 using System.IO;
+using UnityEngine;
+using static CursedSummit.Loading.LoaderInstruction;
 
 namespace CursedSummit.Loading
 {
@@ -53,13 +56,25 @@ namespace CursedSummit.Loading
             List<T> objects = new List<T>();
             Dictionary<string, T> paths = new Dictionary<string, T>();
             this.current = -1;
+            LoaderInstruction inst = CONTINUE;
             foreach (FileInfo file in files)
             {
-                T obj = LoadObject(file);
+                T obj;
+                try
+                {
+                    obj = LoadObject(file);
+                }
+                catch (Exception e)
+                {
+                    Debug.LogError($"[{this.Name}Loader]: Encountered an exception loading file {file.FullName}.\n{e.GetType().Name}\n{e.StackTrace}");
+                    obj = default(T);
+                    inst = BREAK;
+                }
+                yield return inst;
+
                 paths.Add(file.FullName, obj);
                 objects.Add(obj);
                 this.current++;
-                yield return LoaderInstruction.CONTINUE;
             }
             this.LoadedObjects = new LoaderList<T>(objects, paths);
             this.Loaded = true;
