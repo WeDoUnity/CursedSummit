@@ -19,7 +19,10 @@ namespace CursedSummit.Loading
     }
 
     /// <summary>
-    /// Game Loader general interface
+    /// Game loader general interface.
+    /// NOTE: it is not reccomended to implement this interface directly. Instead,
+    /// please implement ILoader(T). ILoader itself is used internally for generic
+    /// type handling.
     /// </summary>
     public interface ILoader
     {
@@ -56,7 +59,7 @@ namespace CursedSummit.Loading
     }
 
     /// <summary>
-    /// Generic typed game loader interface
+    /// Generic typed general game loader interface
     /// </summary>
     /// <typeparam name="T">Object type loaded by this</typeparam>
     public interface ILoader<T> : ILoader
@@ -69,16 +72,31 @@ namespace CursedSummit.Loading
         #endregion
     }
 
-    public interface IJsonLoader<T> : ILoader<T>
+    /// <summary>
+    /// Json game loader interface.
+    /// NOTE: it is not reccomended to implement this interface directly. Instead,
+    /// please implement IJsonLoader(T). IJsonLoader itself is used internally for
+    /// generic type handling.
+    /// </summary>
+    public interface IJsonLoader : ILoader
     {
         #region Properties
         /// <summary>
-        /// Secondary Json file extension of this loader
+        /// Json secondary file extension (/file.jsonext.ext)
         /// </summary>
         string JsonExtension { get; }
+        #endregion
+    }
 
+    /// <summary>
+    /// Generic typed Json loader interface
+    /// </summary>
+    /// <typeparam name="T">Json object typed loaded by this</typeparam>
+    public interface IJsonLoader<T> : IJsonLoader, ILoader<T>
+    {
+        #region Properties
         /// <summary>
-        /// Dictionary matching file path and all Json objects in this file
+        /// Dictionary mapping file path => loaded Json object
         /// </summary>
         Dictionary<string, T[]> Files { get; }
         #endregion

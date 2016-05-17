@@ -70,6 +70,8 @@ namespace CursedSummit.Loading
         /// <returns>Enumerator returns loading instructions (continue/break out)</returns>
         public IEnumerator<LoaderInstruction> LoadAll(List<FileInfo> files)
         {
+            if (this.Loaded) { yield break; }
+
             this.Current = -1;
             foreach (FileInfo file in files)
             {
@@ -84,6 +86,7 @@ namespace CursedSummit.Loading
                 yield return LoaderInstruction.CONTINUE;
             }
             this.Status = "Complete";
+            this.Loaded = true;
         }
 
         /// <summary>

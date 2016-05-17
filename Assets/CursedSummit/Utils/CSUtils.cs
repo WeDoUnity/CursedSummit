@@ -6,8 +6,22 @@ namespace CursedSummit.Utils
 {
     public static class CSUtils
     {
+        #region Constants
+        public const string DataFolderName = "CSData";
+        #endregion
+
         #region Static properties
-        public static string RootPath { get; } = Path.Combine(Application.dataPath, "/../");
+        public static string RootPath { get; }
+
+        public static string CSDataPath { get; }
+        #endregion
+
+        #region Constructors
+        static CSUtils()
+        {
+            RootPath = Path.Combine(Application.dataPath, "/../");
+            CSDataPath = Path.Combine(RootPath, DataFolderName);
+        }
         #endregion
 
         #region Static methods
