@@ -71,7 +71,7 @@ namespace CursedSummit.Loading
             using (FileSystemEnumerator e = new FileSystemEnumerator(localPath, "*", true))
             {
                 //Loop through all "normal" files
-                foreach (FileInfo file in e.Matches().Where(f => f.Attributes == FileAttributes.Normal))
+                foreach (FileInfo file in e.Matches().Where(f => f.Attributes == FileAttributes.Normal && !string.IsNullOrEmpty(f.Extension)))
                 {
                     List<FileInfo> files;
                     string jsonExt = Path.GetExtension(file.Name);
