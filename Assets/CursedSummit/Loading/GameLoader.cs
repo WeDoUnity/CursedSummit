@@ -19,24 +19,35 @@ namespace CursedSummit.Loading
     [DisallowMultipleComponent]
     public class GameLoader : MonoBehaviour
     {
-        #region Instance
+        #region Static fields
+        //File lists
+        private static List<FileInfo> dlls = new List<FileInfo>();
+        private static List<FileInfo> allFiles = new List<FileInfo>();
+
+        //Loader lists
+        private static readonly List<ILoader> Loaders = new List<ILoader>();
+        private static readonly List<IJsonLoader> JsonLoaders = new List<IJsonLoader>();
+
+        //Extension -> file list dictionaries
+        private static Dictionary<string, List<FileInfo>> filesByExt = new Dictionary<string, List<FileInfo>>();
+        private static Dictionary<string, Dictionary<string, List<FileInfo>>> jsonFilesByExt = new Dictionary<string, Dictionary<string, List<FileInfo>>>();
+        #endregion
+
+        #region Static properties
         /// <summary>
-        /// General instance of the GameLoader
+        /// If an instance of GameLoader has been initialized
         /// </summary>
-        public static GameLoader Instance { get; private set; }
+        public static bool Initialized { get; private set; }
+
+        /// <summary>
+        /// If the GameLoader is done loading
+        /// </summary>
+        public static bool Loaded { get; private set; }
         #endregion
 
         #region Fields
         [SerializeField]
         private Progressbar loadingbar;    //Loading bar
-
-        //Data structures   
-        private readonly List<FileInfo> dlls = new List<FileInfo>();
-        private readonly List<FileInfo> allFiles = new List<FileInfo>();
-        private readonly List<ILoader> loaders = new List<ILoader>();
-        private readonly List<IJsonLoader> jsonLoaders = new List<IJsonLoader>();
-        private readonly Dictionary<string, List<FileInfo>> filesByExt = new Dictionary<string, List<FileInfo>>();
-        private readonly Dictionary<string, Dictionary<string, List<FileInfo>>> jsonFilesByExt = new Dictionary<string, Dictionary<string, List<FileInfo>>>();
         #endregion
 
         #region Methods
@@ -69,10 +80,10 @@ namespace CursedSummit.Loading
                     if (!string.IsNullOrEmpty(jsonExt))
                     {
                         Dictionary<string, List<FileInfo>> jsonFiles;
-                        if (!this.jsonFilesByExt.TryGetValue(file.Extension, out jsonFiles))
+                        if (!jsonFilesByExt.TryGetValue(file.Extension, out jsonFiles))
                         {
                             jsonFiles = new Dictionary<string, List<FileInfo>>();
-                            this.jsonFilesByExt.Add(file.Extension, jsonFiles);
+                            jsonFilesByExt.Add(file.Extension, jsonFiles);
                         }
                         if (!jsonFiles.TryGetValue(jsonExt, out files))
                         {
@@ -83,16 +94,16 @@ namespace CursedSummit.Loading
                     }
 
                     //If .dll file
-                    if (file.Extension == ".dll") { this.dlls.Add(file); }
+                    if (file.Extension == ".dll") { dlls.Add(file); }
 
                     //Add to normal extension dict
-                    if (!this.filesByExt.TryGetValue(file.Extension, out files))
+                    if (!filesByExt.TryGetValue(file.Extension, out files))
                     {
                         files = new List<FileInfo>();
-                        this.filesByExt.Add(file.Extension, files);
+                        filesByExt.Add(file.Extension, files);
                     }
                     files.Add(file);
-                    this.allFiles.Add(file);
+                    allFiles.Add(file);
 
                     Debug.Log("[GameLoader]: Located " + file.FullName);
                     yield return null;
@@ -108,7 +119,7 @@ namespace CursedSummit.Loading
         {
             Debug.Log("[GameLoader]: Loading external assemblies...");
             //Loop through all .dll files
-            foreach (FileInfo dll in this.dlls)
+            foreach (FileInfo dll in dlls)
             {
                 Debug.Log("[GameLoader]: Loading " + dll.FullName);
                 //Load to current AppDomain
@@ -136,7 +147,7 @@ namespace CursedSummit.Loading
                     Debug.Log($"[GameLoader]: Initializing IJsonLoader {type.FullName} in {type.Assembly.FullName}");
                     //Create new instance
                     IJsonLoader jLoader = (IJsonLoader)Activator.CreateInstance(type);
-                    this.jsonLoaders.Add(jLoader);
+                    JsonLoaders.Add(jLoader);
                 }
                 //Else, assume ILoader
                 else
@@ -144,7 +155,7 @@ namespace CursedSummit.Loading
                     Debug.Log($"[GameLoader]: Initializing ILoader {type.FullName} in {type.Assembly.FullName}");
                     //Create new instance
                     ILoader loader = (ILoader)Activator.CreateInstance(type);
-                    this.loaders.Add(loader);
+                    Loaders.Add(loader);
                 }
                 yield return null;
             }
@@ -159,12 +170,12 @@ namespace CursedSummit.Loading
             Debug.Log("[GameLoader]: Running all IJsonLoader implementations...");
             Stopwatch watch = new Stopwatch();
             //Loop through loaders
-            foreach (IJsonLoader jLoader in this.jsonLoaders)
+            foreach (IJsonLoader jLoader in JsonLoaders)
             {
                 Dictionary<string, List<FileInfo>> jsonExts;
                 List<FileInfo> files;
                 //Get list of files with the right extension and secondary extension
-                if (this.jsonFilesByExt.TryGetValue(jLoader.Extension, out jsonExts) && jsonExts.TryGetValue(jLoader.JsonExtension, out files))
+                if (jsonFilesByExt.TryGetValue(jLoader.Extension, out jsonExts) && jsonExts.TryGetValue(jLoader.JsonExtension, out files))
                 {
                     Debug.Log("[GameLoader]: Starting IJsonLoader " + jLoader.Name);
                     watch.Restart();
@@ -198,11 +209,11 @@ namespace CursedSummit.Loading
             Debug.Log("[GameLoader]: Running all ILoader implementations...");
             Stopwatch watch = new Stopwatch();
             //Loop through loaders
-            foreach (ILoader loader in this.loaders)
+            foreach (ILoader loader in Loaders)
             {
                 List<FileInfo> files;
                 //Get file list by file extension
-                if (this.filesByExt.TryGetValue(loader.Extension, out files))
+                if (filesByExt.TryGetValue(loader.Extension, out files))
                 {
                     Debug.Log("[GameLoader]: Starting ILoader " + loader.Name);
                     watch.Restart();
@@ -225,26 +236,6 @@ namespace CursedSummit.Loading
                 }
                 else { Debug.Log($"[GameLoader]: No files of {loader.Extension} extension, skipping ILoader {loader.Name}"); }
             }
-        }
-
-        /// <summary>
-        /// Gets the first ILoader implementation of type <typeparamref name="T"/>
-        /// </summary>
-        /// <typeparam name="T">Loader implementation type</typeparam>
-        /// <returns>The active instance of the loader, or null if none was found</returns>
-        public T GetLoaderInstance<T>() where T : class, ILoader
-        {
-            return (T)this.loaders.FirstOrDefault(l => l is T);
-        }
-
-        /// <summary>
-        /// Gets the first IJsonLoader implementation of type <typeparamref name="T"/>
-        /// </summary>
-        /// <typeparam name="T">Loader implementation type</typeparam>
-        /// <returns>The active instance of the loader, or null if none was found</returns>
-        public T GetJsonLoaderInstance<T>() where T : class, IJsonLoader
-        {
-            return (T)this.jsonLoaders.FirstOrDefault(jl => jl is T);
         }
         #endregion
 
@@ -269,6 +260,20 @@ namespace CursedSummit.Loading
                 });
 
         }
+
+        /// <summary>
+        /// Gets the first ILoader implementation of type <typeparamref name="T"/>
+        /// </summary>
+        /// <typeparam name="T">Loader implementation type</typeparam>
+        /// <returns>The active instance of the loader, or null if none was found</returns>
+        public static T GetLoaderInstance<T>() where T : class, ILoader => (T)Loaders.FirstOrDefault(l => l is T);
+
+        /// <summary>
+        /// Gets the first IJsonLoader implementation of type <typeparamref name="T"/>
+        /// </summary>
+        /// <typeparam name="T">Loader implementation type</typeparam>
+        /// <returns>The active instance of the loader, or null if none was found</returns>
+        public static T GetJsonLoaderInstance<T>() where T : class, IJsonLoader => (T)JsonLoaders.FirstOrDefault(jl => jl is T);
         #endregion
 
         #region Functions
@@ -280,15 +285,15 @@ namespace CursedSummit.Loading
             Stopwatch general = Stopwatch.StartNew(), watch = Stopwatch.StartNew();
             yield return FindAllFiles();
             watch.Stop();
-            Debug.Log($"[GameLoader]: Found {this.allFiles.Count} files in {watch.Elapsed.TotalSeconds}s");
+            Debug.Log($"[GameLoader]: Found {allFiles.Count} files in {watch.Elapsed.TotalSeconds}s");
 
             //Load all external assemblies
-            if (this.dlls.Count > 0)
+            if (dlls.Count > 0)
             {
                 watch.Restart();
                 yield return LoadAllDlls();
                 watch.Stop();
-                Debug.Log($"[GameLoader]: Loaded {this.dlls.Count} external assemblies in {watch.Elapsed.TotalSeconds}s");
+                Debug.Log($"[GameLoader]: Loaded {dlls.Count} external assemblies in {watch.Elapsed.TotalSeconds}s");
             }
             else { Debug.Log("[GameLoader]: No external assmblies to load, skipping");}
 
@@ -296,32 +301,37 @@ namespace CursedSummit.Loading
             watch.Restart();
             yield return FetchAllLoaders();
             watch.Stop();
-            Debug.Log($"[GameLoader]: Located {this.loaders.Count} ILoader implementations and {this.jsonLoaders.Count} IJsonLoader implementations in {watch.Elapsed.TotalSeconds}s");
+            Debug.Log($"[GameLoader]: Located {Loaders.Count} ILoader implementations and {JsonLoaders.Count} IJsonLoader implementations in {watch.Elapsed.TotalSeconds}s");
 
             //Run all Json loaders
             watch.Restart();
             yield return RunAllIJsonLoaders();
             watch.Stop();
-            Debug.Log($"[GameLoader]: Ran {this.jsonLoaders.Count} IJsonLoaders in {watch.Elapsed.TotalSeconds}s");
+            Debug.Log($"[GameLoader]: Ran {JsonLoaders.Count} IJsonLoaders in {watch.Elapsed.TotalSeconds}s");
 
             //Run all classic loaders
             watch.Restart();
             yield return RunAllILoaders();
             watch.Stop();
-            Debug.Log($"[GameLoader]: Ran {this.loaders.Count} ILoaders in {watch.Elapsed.TotalSeconds}s");
+            Debug.Log($"[GameLoader]: Ran {Loaders.Count} ILoaders in {watch.Elapsed.TotalSeconds}s");
+
+            //Clear now unneeded cache
+            dlls = null;
+            allFiles = null;
+            filesByExt = null;
+            jsonFilesByExt = null;
 
             //Complete
             general.Stop();
+            Loaded = true;
             Debug.Log($"[GameLoader]: Completed loading sequence in {general.Elapsed.TotalSeconds}s, going to main menu...");
             GameLogic.Instance.LoadScene(GameScenes.MENU);
         }
 
         private void Awake()
         {
-            if (Instance != null) { Destroy(this); return; }
-
-            Instance = this;
-            DontDestroyOnLoad(this);
+            if (!Initialized) { Initialized = true; }
+            else { Destroy(this); }
         }
         #endregion
     }
