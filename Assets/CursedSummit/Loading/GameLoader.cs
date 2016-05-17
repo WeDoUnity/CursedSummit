@@ -26,10 +26,6 @@ namespace CursedSummit.Loading
         public static GameLoader Instance { get; private set; }
         #endregion
 
-        #region Constants
-        public const string GameFolderName = "CSData";
-        #endregion
-
         #region Fields
         [SerializeField]
         private Progressbar loadingbar;    //Loading bar
