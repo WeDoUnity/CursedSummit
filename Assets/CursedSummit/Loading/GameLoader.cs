@@ -14,7 +14,7 @@ using Debug = UnityEngine.Debug;
 namespace CursedSummit.Loading
 {
     /// <summary>
-    /// General Game loader (nothing really implemented, only a framework skeleton)
+    /// General Game loader
     /// </summary>
     [DisallowMultipleComponent]
     public class GameLoader : MonoBehaviour
