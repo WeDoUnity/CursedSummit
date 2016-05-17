@@ -8,25 +8,22 @@ namespace CursedSummit.Loading
     public abstract class JsonLoader<T> : IJsonLoader<T>, IEnumerable<T>
     {
         #region Properties
+        private int current;
         /// <summary>
         /// Current file loading index
         /// </summary>
-        public int Current { get; private set; }
-
-        /// <summary>
-        /// Currently loaded file
-        /// </summary>
-        public string Status { get; private set; }
+        int ILoader.Current => this.current;
 
         /// <summary>
         /// If this loader is done loading
         /// </summary>
         public bool Loaded { get; private set; }
 
+        private readonly List<T> objects = new List<T>();
         /// <summary>
         /// All objects loaded by this loader
         /// </summary>
-        public List<T> Objects { get; } = new List<T>();
+        List<T> ILoader<T>.Objects => this.objects;
 
         /// <summary>
         /// File path => Loaded objects mapping dictionary
@@ -36,7 +33,7 @@ namespace CursedSummit.Loading
         /// <summary>
         /// Json extension (.json)
         /// </summary>
-        public string Extension => "json";
+        public string Extension => ".json";
         #endregion
 
         #region Abstract properties
@@ -58,34 +55,33 @@ namespace CursedSummit.Loading
         /// <param name="path">File path</param>
         /// <param name="obj">Loaded objects are stored in this out parameter</param>
         /// <returns>If files had been found at this path</returns>
-        public bool TryGetObjects(string path, out T[] obj)
-        {
-            return this.Files.TryGetValue(path, out obj);
-        }
-        
+        public bool TryGetObjects(string path, out T[] obj) => this.Files.TryGetValue(path, out obj);
+
         /// <summary>
         /// File loading coroutine, loads all relevant files into memory
         /// </summary>
         /// <param name="files">Specific files to load</param>
         /// <returns>Enumerator returns loading instructions (continue/break out)</returns>
-        public IEnumerator<LoaderInstruction> LoadAll(List<FileInfo> files)
+        IEnumerator<LoaderInstruction> ILoader.LoadAll(List<FileInfo> files)
         {
             if (this.Loaded) { yield break; }
 
-            this.Current = -1;
+            this.current = -1;
             foreach (FileInfo file in files)
             {
-                this.Status = $"[{this.Name}]: Parsing {file.FullName}";
-                string data = string.Empty; //TODO: Read file here
+                string data;
+                using (StreamReader r = file.OpenText())
+                {
+                    data = r.ReadToEnd();
+                }
                 yield return LoaderInstruction.CONTINUE;
 
                 T[] array = JsonConvert.DeserializeObject<T[]>(data);
                 this.Files.Add(Path.ChangeExtension(file.FullName, null), array);
-                this.Objects.AddRange(array);
-                this.Current++;
+                this.objects.AddRange(array);
+                this.current++;
                 yield return LoaderInstruction.CONTINUE;
             }
-            this.Status = "Complete";
             this.Loaded = true;
         }
 
@@ -94,13 +90,13 @@ namespace CursedSummit.Loading
         /// WARNING: The files are not sorted and appear in loading order
         /// </summary>
         /// <returns>Lazy sequence of the loaded files</returns>
-        public IEnumerator<T> GetEnumerator() => this.Objects.GetEnumerator();
+        IEnumerator<T> IEnumerable<T>.GetEnumerator() => this.objects.GetEnumerator();
 
         /// <summary>
         /// Non-generic enumerator implementation
         /// </summary>
         /// <returns>Enumerator for this sequence</returns>
-        IEnumerator IEnumerable.GetEnumerator() => GetEnumerator();
+        IEnumerator IEnumerable.GetEnumerator() => this.objects.GetEnumerator();
         #endregion
     }
 }
