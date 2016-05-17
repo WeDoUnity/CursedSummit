@@ -69,11 +69,7 @@ namespace CursedSummit.Loading
             this.current = -1;
             foreach (FileInfo file in files)
             {
-                string data;
-                using (StreamReader r = file.OpenText())
-                {
-                    data = r.ReadToEnd();
-                }
+                string data = file.ReadFile();
                 yield return LoaderInstruction.CONTINUE;
 
                 T[] array = JsonConvert.DeserializeObject<T[]>(data);
