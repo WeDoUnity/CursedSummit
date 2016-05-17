@@ -49,6 +49,11 @@ namespace CursedSummit.Loading
         #endregion
 
         #region Methods
+        /// <summary>
+        /// File loading coroutine, loads all relevant files into memory
+        /// </summary>
+        /// <param name="files">Specific files to load</param>
+        /// <returns>Enumerator returns loading instructions (continue/break out)</returns>
         IEnumerator<LoaderInstruction> ILoader.LoadAll(List<FileInfo> files)
         {
             if (this.Loaded) { yield break; }
@@ -82,6 +87,11 @@ namespace CursedSummit.Loading
         #endregion
 
         #region Abstract methods
+        /// <summary>
+        /// Loads a specific file into memory
+        /// </summary>
+        /// <param name="file">File to load</param>
+        /// <returns>The loaded object</returns>
         public abstract T LoadObject(FileInfo file);
         #endregion
     }
