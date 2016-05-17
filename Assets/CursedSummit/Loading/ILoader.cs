@@ -62,7 +62,7 @@ namespace CursedSummit.Loading
     /// Generic typed general game loader interface
     /// </summary>
     /// <typeparam name="T">Object type loaded by this</typeparam>
-    public interface ILoader<T> : ILoader
+    public interface ILoader<T> : ILoader, IEnumerable<T>
     {
         #region Properties
         /// <summary>

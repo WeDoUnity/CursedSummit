@@ -3,10 +3,26 @@ using System.Collections.Generic;
 using System.IO;
 using Newtonsoft.Json;
 
+//TODO: Create a data container instead of using lists, and switch to local path
 namespace CursedSummit.Loading
 {
-    public abstract class JsonLoader<T> : IJsonLoader<T>, IEnumerable<T>
+    /// <summary>
+    /// Generic Json loading class. Finds and loads all files with the
+    /// filename.jext.json file structure, where "jext" is the return value
+    /// of the JsonExtension property. All loaded files are then stored internally
+    /// and are accessible through the indexers, or IEnumerable implementation.
+    /// </summary>
+    /// <typeparam name="T">Type of object loaded from Json data by this loader</typeparam>
+    public abstract class JsonLoader<T> : IJsonLoader<T>
     {
+        #region Instance
+        private static JsonLoader<T> instance;
+        /// <summary>
+        /// Returns the current instance of the loader, or null if none yet exist
+        /// </summary>
+        public static JsonLoader<T> Instance => instance ?? (instance = GameLoader.GetJsonLoaderInstance<JsonLoader<T>>());
+        #endregion
+
         #region Properties
         private int current;
         /// <summary>
@@ -25,15 +41,22 @@ namespace CursedSummit.Loading
         /// </summary>
         List<T> ILoader<T>.Objects => this.objects;
 
+        private readonly Dictionary<string, T[]> files = new Dictionary<string, T[]>();
         /// <summary>
         /// File path => Loaded objects mapping dictionary
         /// </summary>
-        public Dictionary<string, T[]> Files { get; } = new Dictionary<string, T[]>();
+        Dictionary<string, T[]> IJsonLoader<T>.Files => this.files;
 
         /// <summary>
         /// Json extension (.json)
         /// </summary>
         public string Extension => ".json";
+        #endregion
+
+        #region Indexers
+        public T this[int i] => this.objects[i];
+
+        public T[] this[string s] => this.files[s];
         #endregion
 
         #region Abstract properties
@@ -55,7 +78,14 @@ namespace CursedSummit.Loading
         /// <param name="path">File path</param>
         /// <param name="obj">Loaded objects are stored in this out parameter</param>
         /// <returns>If files had been found at this path</returns>
-        public bool TryGetObjects(string path, out T[] obj) => this.Files.TryGetValue(path, out obj);
+        public bool TryGetObjects(string path, out T[] obj) => this.files.TryGetValue(path, out obj);
+
+        /// <summary>
+        /// Determines if there is loaded data at this path
+        /// </summary>
+        /// <param name="path">Path to look at</param>
+        /// <returns>If there is data at this path</returns>
+        public bool HasPath(string path) => this.files.ContainsKey(path);
 
         /// <summary>
         /// File loading coroutine, loads all relevant files into memory
@@ -73,7 +103,7 @@ namespace CursedSummit.Loading
                 yield return LoaderInstruction.CONTINUE;
 
                 T[] array = JsonConvert.DeserializeObject<T[]>(data);
-                this.Files.Add(Path.ChangeExtension(file.FullName, null), array);
+                this.files.Add(Path.ChangeExtension(file.FullName, null), array);
                 this.objects.AddRange(array);
                 this.current++;
                 yield return LoaderInstruction.CONTINUE;
