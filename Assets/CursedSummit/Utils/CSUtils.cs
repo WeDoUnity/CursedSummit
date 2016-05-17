@@ -13,7 +13,7 @@ namespace CursedSummit.Utils
         /// <summary>
         /// Cursed Summit game data folder name
         /// </summary>
-        public const string DataFolderName = "CSData";
+        public const string CSDataFolderName = "CSData";
         #endregion
 
         #region Static properties
@@ -35,7 +35,7 @@ namespace CursedSummit.Utils
         static CSUtils()
         {
             RootPath = Path.Combine(Application.dataPath, "/../");
-            CSDataPath = Path.Combine(RootPath, DataFolderName);
+            CSDataPath = Path.Combine(RootPath, CSDataFolderName);
         }
         #endregion
 
