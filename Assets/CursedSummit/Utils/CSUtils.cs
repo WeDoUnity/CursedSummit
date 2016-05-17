@@ -4,19 +4,34 @@ using static UnityEngine.Mathf;
 
 namespace CursedSummit.Utils
 {
+    /// <summary>
+    /// General usage static utils properties and methods
+    /// </summary>
     public static class CSUtils
     {
         #region Constants
+        /// <summary>
+        /// Cursed Summit game data folder name
+        /// </summary>
         public const string DataFolderName = "CSData";
         #endregion
 
         #region Static properties
+        /// <summary>
+        /// Cursed Summit root folder URL
+        /// </summary>
         public static string RootPath { get; }
 
+        /// <summary>
+        /// Cursed Summit game data folder URL
+        /// </summary>
         public static string CSDataPath { get; }
         #endregion
 
         #region Constructors
+        /// <summary>
+        /// Initiates the fields and properties of this utils class
+        /// </summary>
         static CSUtils()
         {
             RootPath = Path.Combine(Application.dataPath, "/../");
