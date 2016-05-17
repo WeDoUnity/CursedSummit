@@ -54,7 +54,7 @@ namespace CursedSummit.Loading
 
         string IJsonLoader.JsonExtension => this.JsonExtension;
         /// <summary>
-        /// Json specific extension of this loader
+        /// Json specific secondary extension of this loader
         /// </summary>
         protected abstract string JsonExtension { get; }
         #endregion
@@ -68,6 +68,7 @@ namespace CursedSummit.Loading
         IEnumerator<LoaderInstruction> ILoader.LoadAll(List<FileInfo> files)
         {
             if (this.Loaded) { yield break; }
+
             List<T> objects = new List<T>();
             Dictionary<string, T[]> paths = new Dictionary<string, T[]>();
             this.current = -1;
@@ -77,7 +78,7 @@ namespace CursedSummit.Loading
                 yield return LoaderInstruction.CONTINUE;
 
                 T[] array = JsonConvert.DeserializeObject<T[]>(data);
-                paths.Add(Path.ChangeExtension(file.FullName, null), array);
+                paths.Add(file.FullName, array);
                 objects.AddRange(array);
                 this.current++;
                 yield return LoaderInstruction.CONTINUE;

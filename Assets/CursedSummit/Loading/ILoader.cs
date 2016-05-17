@@ -21,8 +21,8 @@ namespace CursedSummit.Loading
     /// <summary>
     /// Game loader general interface.
     /// NOTE: it is not reccomended to implement this interface directly. Instead,
-    /// please implement ILoader(T). ILoader itself is used internally for generic
-    /// type handling.
+    /// please implement ILoader(T), or even better, Loader(T). ILoader itself is used
+    /// internally for generic type handling.
     /// </summary>
     public interface ILoader
     {
@@ -59,10 +59,12 @@ namespace CursedSummit.Loading
     }
 
     /// <summary>
-    /// Generic typed general game loader interface
+    /// Generic typed general game loader interface.
+    /// NOTE: You might want to implement Loader(T) directly to have some
+    /// basic functionality in place.
     /// </summary>
     /// <typeparam name="T">Object type loaded by this</typeparam>
-    public interface ILoader<T> : ILoader, IEnumerable<T>
+    public interface ILoader<T> : ILoader
     {
         #region Properties
         /// <summary>
@@ -70,13 +72,22 @@ namespace CursedSummit.Loading
         /// </summary>
         LoaderList<T> LoadedObjects { get; }
         #endregion
+
+        #region Methods
+        /// <summary>
+        /// Loads one given file
+        /// </summary>
+        /// <param name="file">File to load</param>
+        /// <returns>The loaded object</returns>
+        T LoadObject(FileInfo file);
+        #endregion
     }
 
     /// <summary>
     /// Json game loader interface.
     /// NOTE: it is not reccomended to implement this interface directly. Instead,
-    /// please implement IJsonLoader(T). IJsonLoader itself is used internally for
-    /// generic type handling.
+    /// please implement IJsonLoader(T), or even better, JsonLoader(T). IJsonLoader itself is
+    /// used internally for generic type handling.
     /// </summary>
     public interface IJsonLoader : ILoader
     {
@@ -89,7 +100,9 @@ namespace CursedSummit.Loading
     }
 
     /// <summary>
-    /// Generic typed Json loader interface
+    /// Generic typed Json loader interface.
+    /// NOTE: You might want to implement JsonLoader(T) directly to have some
+    /// basic functionality in place.
     /// </summary>
     /// <typeparam name="T">Json object typed loaded by this</typeparam>
     public interface IJsonLoader<T> : IJsonLoader

@@ -81,6 +81,7 @@
     <Compile Include="Assets\CursedSummit\DebugWindow.cs" />
     <Compile Include="Assets\CursedSummit\Extensions\Extensions.cs" />
     <Compile Include="Assets\CursedSummit\Loading\JsonLoaderList.cs" />
+    <Compile Include="Assets\CursedSummit\Loading\Loader.cs" />
     <Compile Include="Assets\CursedSummit\Loading\LoaderList.cs" />
     <Compile Include="Assets\FileSystemEnumerator\FileSystemEnumerator.cs" />
     <Compile Include="Assets\CursedSummit\Loading\GameLoader.cs" />
