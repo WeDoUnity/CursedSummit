@@ -5,14 +5,13 @@ using Newtonsoft.Json;
 using UnityEngine;
 using static CursedSummit.Loading.LoaderInstruction;
 
-//TODO: Switch to local path
 namespace CursedSummit.Loading
 {
     /// <summary>
     /// Generic Json loading class. Finds and loads all files with the
     /// filename.jext.json file structure, where "jext" is the return value
     /// of the JsonExtension property. All loaded files are then stored internally
-    /// and are accessible through the indexers, or IEnumerable implementation.
+    /// and are accessible through the JsonLoaderList(T) property.
     /// </summary>
     /// <typeparam name="T">Type of object loaded from Json data by this loader</typeparam>
     public abstract class JsonLoader<T> : IJsonLoader<T>
@@ -103,7 +102,7 @@ namespace CursedSummit.Loading
                     inst = BREAK;
                 }
                 yield return inst;
-                paths.Add(file.FullName, array);
+                paths.Add(file.GetLocalPath(), array);
                 objects.AddRange(array);
                 this.current++;
             }

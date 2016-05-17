@@ -6,6 +6,13 @@ using static CursedSummit.Loading.LoaderInstruction;
 
 namespace CursedSummit.Loading
 {
+    /// <summary>
+    /// Generic file loading class. Finds and loads all files with the
+    /// filename.ext file structure, where "ext" is the return value
+    /// of the Extension property. All loaded files are then stored internally
+    /// and are accessible through the LoaderList(T) property.
+    /// </summary>
+    /// <typeparam name="T">Type of object loaded from Json data by this loader</typeparam>
     public abstract class Loader<T> : ILoader<T>
     {
         #region Instance
@@ -77,7 +84,7 @@ namespace CursedSummit.Loading
                 }
                 yield return inst;
 
-                paths.Add(file.FullName, obj);
+                paths.Add(file.GetLocalPath(), obj);
                 objects.Add(obj);
                 this.current++;
             }

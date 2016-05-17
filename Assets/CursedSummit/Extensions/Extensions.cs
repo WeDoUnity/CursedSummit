@@ -1,6 +1,7 @@
 ﻿
 namespace CursedSummit.Extensions
 {
+    using System.IO;
     using UnityEngine;
 
     /// <summary>
@@ -14,6 +15,22 @@ namespace CursedSummit.Extensions
         /// </summary>
         /// <param name="obj">Object to destroy</param>
         public static void DestroyThis(this Object obj) => Object.Destroy(obj);
+        #endregion
+    }
+
+    /// <summary>
+    /// Path related usage string extensions
+    /// </summary>
+    public static class StringExtensions
+    {
+        #region Methods
+        /// <summary>
+        /// Formats a string path by transforming all separator chars to '/' and removing trailing and ending
+        /// instances of this char
+        /// </summary>
+        /// <param name="s"></param>
+        /// <returns></returns>
+        public static string FormatPath(this string s) => s.Replace(Path.DirectorySeparatorChar, '/').Trim('/');
         #endregion
     }
 }
@@ -41,6 +58,8 @@ namespace System.Diagnostics
 
 namespace System.IO
 {
+    using CursedSummit.Utils;
+
     /// <summary>
     /// Holds method extensions for the System.IO.FileInfo type
     /// </summary>
@@ -59,6 +78,13 @@ namespace System.IO
                 return r.ReadToEnd();
             }
         }
+
+        /// <summary>
+        /// Gets the local path to the current file from the current CSUtils workind directory
+        /// </summary>
+        /// <param name="file">File to get the path path for</param>
+        /// <returns>Local path of this file</returns>
+        public static string GetLocalPath(this FileInfo file) => file.FullName.Replace('\\', '/').Replace(CSUtils.CurrentDirectory, null).Trim('/');
         #endregion
     }
 }

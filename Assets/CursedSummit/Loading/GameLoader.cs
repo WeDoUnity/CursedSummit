@@ -303,6 +303,9 @@ namespace CursedSummit.Loading
             watch.Stop();
             Debug.Log($"[GameLoader]: Located {loaders.Count} ILoader implementations and {jsonLoaders.Count} IJsonLoader implementations in {watch.Elapsed.TotalSeconds}s");
 
+            //Set current working directory to CSData directory
+            CSUtils.SetCurrentDirectory(CSUtils.CSDataPath);
+
             //Run all Json loaders
             watch.Restart();
             yield return RunAllIJsonLoaders();
@@ -314,6 +317,9 @@ namespace CursedSummit.Loading
             yield return RunAllILoaders();
             watch.Stop();
             Debug.Log($"[GameLoader]: Ran {loaders.Count} ILoaders in {watch.Elapsed.TotalSeconds}s");
+
+            //Reset workind directory
+            CSUtils.ResetCurrentDirectory();
 
             //Clear now unneeded cache
             dlls = null;
