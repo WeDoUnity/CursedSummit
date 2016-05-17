@@ -8,7 +8,7 @@ MonoBehaviour:
   m_GameObject: {fileID: 0}
   m_Enabled: 1
   m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 35ed9fa8a7043b34389ab468e2b05f2f, type: 3}
+  m_Script: {fileID: 11500000, guid: 25de0c096acc305499b9690b1957a63f, type: 3}
   m_Name: AkWwiseProjectData
   m_EditorClassIdentifier: 
   CurrentPluginConfig: Profile
@@ -16,36 +16,36 @@ MonoBehaviour:
   - PhysicalPath: Events\Default Work Unit.wwu
     ParentPhysicalPath: 
     Guid: '{E1ABAF98-EC33-4811-A2AC-015E39787FA0}'
-    m_lastTimePsrt1: -1924687706
-    m_lastTimePart2: -1999406419
+    m_lastTimePsrt1: 1849270501
+    m_lastTimePart2: -1999405777
     List: []
   AuxBusWwu:
   - PhysicalPath: Master-Mixer Hierarchy\Default Work Unit.wwu
     ParentPhysicalPath: 
     Guid: '{047A48E9-7269-417D-99B4-789C03CF0DC7}'
-    m_lastTimePsrt1: 833281502
-    m_lastTimePart2: -1999406421
+    m_lastTimePsrt1: 1849320531
+    m_lastTimePart2: -1999405777
     List: []
   StateWwu:
   - PhysicalPath: States\Default Work Unit.wwu
     ParentPhysicalPath: 
     Guid: '{8CE245E4-B3A4-48FC-9BB5-D583F80FE35C}'
-    m_lastTimePsrt1: 833311525
-    m_lastTimePart2: -1999406421
+    m_lastTimePsrt1: 1849370568
+    m_lastTimePart2: -1999405777
     List: []
   SwitchWwu:
   - PhysicalPath: Switches\Default Work Unit.wwu
     ParentPhysicalPath: 
     Guid: '{480FCDB1-4F23-4BAD-8739-F5CB90176E70}'
-    m_lastTimePsrt1: 833391585
-    m_lastTimePart2: -1999406421
+    m_lastTimePsrt1: 1849380577
+    m_lastTimePart2: -1999405777
     List: []
   BankWwu:
   - PhysicalPath: SoundBanks\Default Work Unit.wwu
     ParentPhysicalPath: 
     Guid: '{B71EB404-B079-4E3D-BA6B-CD91EC22AB7C}'
-    m_lastTimePsrt1: -1924587684
-    m_lastTimePart2: -1999406419
+    m_lastTimePsrt1: 807204937
+    m_lastTimePart2: -1999405771
     List:
     - Name: TheGame_SoundBank
       Path: Default Work Unit\TheGame_SoundBank
@@ -57,7 +57,7 @@ MonoBehaviour:
       ID: -739778690
       Guid: fdb0e683b1f51447893345eb37665667
   ExpandedItems:
-  - /Wwise_TheGame
+  - /Wwise_CursedSummit
   m_lastPopulateTimePsrt1: 0
   m_lastPopulateTimePart2: 0
   autoPopulateEnabled: 1
