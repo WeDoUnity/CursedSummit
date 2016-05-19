@@ -1,9 +1,12 @@
-﻿
+﻿using System;
+using System.Diagnostics;
+using System.IO;
+using System.Reflection;
+using CursedSummit.Utils;
+using Object = UnityEngine.Object;
+
 namespace CursedSummit.Extensions
 {
-    using System.IO;
-    using UnityEngine;
-
     /// <summary>
     /// Holds method extensions for the UnityEngine.Object type
     /// </summary>
@@ -19,7 +22,7 @@ namespace CursedSummit.Extensions
     }
 
     /// <summary>
-    /// Path related usage string extensions
+    /// Path related usage string extension methods
     /// </summary>
     public static class StringExtensions
     {
@@ -31,6 +34,25 @@ namespace CursedSummit.Extensions
         /// <param name="s"></param>
         /// <returns></returns>
         public static string FormatPath(this string s) => s.Replace(Path.DirectorySeparatorChar, '/').Trim('/');
+        #endregion
+    }
+
+    /// <summary>
+    /// Holds method extensions for the System.Reflection.Assembly type
+    /// </summary>
+    public static class AssemblyExtensions
+    {
+        #region Methods
+        /// <summary>
+        /// Returns the Version information for this assembly
+        /// </summary>
+        /// <param name="assembly">Assembly to get the version for</param>
+        /// <returns>Assembly informational version if any exists, else regular assembly version</returns>
+        public static Version GetVersion(this Assembly assembly)
+        {
+            string info = FileVersionInfo.GetVersionInfo(assembly.Location).ProductVersion;
+            return string.IsNullOrEmpty(info) ? assembly.GetName().Version : new Version(info);
+        }
         #endregion
     }
 }
@@ -58,7 +80,6 @@ namespace System.Diagnostics
 
 namespace System.IO
 {
-    using CursedSummit.Utils;
 
     /// <summary>
     /// Holds method extensions for the System.IO.FileInfo type

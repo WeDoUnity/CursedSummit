@@ -5,6 +5,7 @@ using System.Diagnostics;
 using System.IO;
 using System.Linq;
 using System.Reflection;
+using CursedSummit.Extensions;
 using CursedSummit.UI;
 using CursedSummit.Utils;
 using FindFiles;
@@ -19,18 +20,61 @@ namespace CursedSummit.Loading
     [DisallowMultipleComponent]
     public class GameLoader : MonoBehaviour
     {
-        #region Static fields
-        //File lists
-        private static List<FileInfo> dlls = new List<FileInfo>();
-        private static List<FileInfo> allFiles = new List<FileInfo>();
+        /// <summary>
+        /// Loaded assembly informational wrapper
+        /// </summary>
+        public struct LoadedAssembly
+        {
+            #region Properties
+            /// <summary>
+            /// Code assembly
+            /// </summary>
+            public Assembly Assembly { get; }
 
+            /// <summary>
+            /// Assembly version
+            /// </summary>
+            public Version Version { get; }
+
+            /// <summary>
+            /// Assembly file
+            /// </summary>
+            public FileInfo File { get; }
+
+            /// <summary>
+            /// Assembly .dll name
+            /// </summary>
+            public string DllName { get; }
+
+            /// <summary>
+            /// Assembly local path, from the CSData folder
+            /// </summary>
+            public string Path { get; }
+            #endregion
+
+            #region Constructors
+            /// <summary>
+            /// Creates a new loaded assembly info
+            /// </summary>
+            /// <param name="assembly">Assembly being loaded</param>
+            /// <param name="file">Assembly file</param>
+            /// <param name="path">Assembly path. Defaults to local path from the CSData folder</param>
+            /// <param name="version">Assembly version. Defaults to AssemblyInformationalVersion, or AssemblyVersion</param>
+            internal LoadedAssembly(Assembly assembly, FileInfo file, string path = null, Version version = null)
+            {
+                this.Assembly = assembly;
+                this.File = file;
+                this.DllName = file.Name;
+                this.Path = path ?? file.GetLocalPath();
+                this.Version = version ?? assembly.GetVersion();
+            }
+            #endregion
+        }
+
+        #region Static fields
         //Loader lists
         private static List<ILoader> loaders = new List<ILoader>();
         private static List<IJsonLoader> jsonLoaders = new List<IJsonLoader>();
-
-        //Extension -> file list dictionaries
-        private static Dictionary<string, List<FileInfo>> filesByExt = new Dictionary<string, List<FileInfo>>();
-        private static Dictionary<string, Dictionary<string, List<FileInfo>>> jsonFilesByExt = new Dictionary<string, Dictionary<string, List<FileInfo>>>();
         #endregion
 
         #region Static properties
@@ -43,11 +87,24 @@ namespace CursedSummit.Loading
         /// If the GameLoader is done loading
         /// </summary>
         public static bool Loaded { get; private set; }
+        
+        /// <summary>
+        /// All currently loaded game/mods loaded assemblies
+        /// </summary>
+        public static List<LoadedAssembly> LoadedAssemblies { get; private set; }
         #endregion
 
         #region Fields
         [SerializeField]
         private Progressbar loadingbar;    //Loading bar
+
+        //File lists
+        private List<FileInfo> dlls = new List<FileInfo>();
+        private List<FileInfo> allFiles = new List<FileInfo>();
+
+        //Extension -> file list dictionaries
+        private Dictionary<string, List<FileInfo>> filesByExt = new Dictionary<string, List<FileInfo>>();
+        private Dictionary<string, Dictionary<string, List<FileInfo>>> jsonFilesByExt = new Dictionary<string, Dictionary<string, List<FileInfo>>>();
         #endregion
 
         #region Methods
@@ -80,10 +137,10 @@ namespace CursedSummit.Loading
                     if (!string.IsNullOrEmpty(jsonExt))
                     {
                         Dictionary<string, List<FileInfo>> jsonFiles;
-                        if (!jsonFilesByExt.TryGetValue(file.Extension, out jsonFiles))
+                        if (!this.jsonFilesByExt.TryGetValue(file.Extension, out jsonFiles))
                         {
                             jsonFiles = new Dictionary<string, List<FileInfo>>();
-                            jsonFilesByExt.Add(file.Extension, jsonFiles);
+                            this.jsonFilesByExt.Add(file.Extension, jsonFiles);
                         }
                         if (!jsonFiles.TryGetValue(jsonExt, out files))
                         {
@@ -94,16 +151,16 @@ namespace CursedSummit.Loading
                     }
 
                     //If .dll file
-                    if (file.Extension == ".dll") { dlls.Add(file); }
+                    if (file.Extension == ".dll") { this.dlls.Add(file); }
 
                     //Add to normal extension dict
-                    if (!filesByExt.TryGetValue(file.Extension, out files))
+                    if (!this.filesByExt.TryGetValue(file.Extension, out files))
                     {
                         files = new List<FileInfo>();
-                        filesByExt.Add(file.Extension, files);
+                        this.filesByExt.Add(file.Extension, files);
                     }
                     files.Add(file);
-                    allFiles.Add(file);
+                    this.allFiles.Add(file);
 
                     Debug.Log("[GameLoader]: Located " + file.FullName);
                     yield return null;
@@ -118,12 +175,22 @@ namespace CursedSummit.Loading
         private IEnumerator LoadAllDlls()
         {
             Debug.Log("[GameLoader]: Loading external assemblies...");
+            LoadedAssemblies = new List<LoadedAssembly>(this.dlls.Count + 1)
+            {
+                //Game assembly
+                new LoadedAssembly(typeof(GameLoader).Assembly,
+                                   new FileInfo(Path.Combine(Application.dataPath, "Managed/Assembly-CSharp.dll")),
+                                   "../CursedSummit_Data/Managed/Assembly-CSharp.dll",
+                                   GameVersion.Version)
+            };
+            yield return null;
+
             //Loop through all .dll files
-            foreach (FileInfo dll in dlls)
+            foreach (FileInfo dll in this.dlls)
             {
                 Debug.Log("[GameLoader]: Loading " + dll.FullName);
                 //Load to current AppDomain
-                Assembly.LoadFile(dll.FullName);
+                LoadedAssemblies.Add(new LoadedAssembly(Assembly.LoadFile(dll.FullName), dll));
                 yield return null;
             }
         }
@@ -139,23 +206,21 @@ namespace CursedSummit.Loading
             Type loaderType = typeof(ILoader), jLoaderType = typeof(IJsonLoader);
 
             //Finds all loader implementations within the loaded assemblies
-            foreach (Type type in GetAllTypes().Where(t => t.IsClass && !t.IsAbstract && !t.IsValueType && t.IsAssignableFrom(loaderType)))
+            foreach (Type type in GetAllTypes().Where(t => t.IsAssignableFrom(loaderType) && t.IsClass && !t.IsAbstract && !t.IsValueType))
             {
                 //If IJsonLoader
                 if (type.IsAssignableFrom(jLoaderType))
                 {
                     Debug.Log($"[GameLoader]: Initializing IJsonLoader {type.FullName} in {type.Assembly.FullName}");
                     //Create new instance
-                    IJsonLoader jLoader = (IJsonLoader)Activator.CreateInstance(type);
-                    jsonLoaders.Add(jLoader);
+                    jsonLoaders.Add((IJsonLoader)Activator.CreateInstance(type));
                 }
                 //Else, assume ILoader
                 else
                 {
                     Debug.Log($"[GameLoader]: Initializing ILoader {type.FullName} in {type.Assembly.FullName}");
                     //Create new instance
-                    ILoader loader = (ILoader)Activator.CreateInstance(type);
-                    loaders.Add(loader);
+                    loaders.Add((ILoader)Activator.CreateInstance(type));
                 }
                 yield return null;
             }
@@ -165,7 +230,7 @@ namespace CursedSummit.Loading
         /// Runs the loading sequence of all created IJsonLoader implementations
         /// </summary>
         /// <returns>Lazy loading coroutine, loading on demand</returns>
-        private IEnumerator RunAllIJsonLoaders()
+        private IEnumerator RunAllJsonLoaders()
         {
             Debug.Log("[GameLoader]: Running all IJsonLoader implementations...");
             Stopwatch watch = new Stopwatch();
@@ -175,7 +240,7 @@ namespace CursedSummit.Loading
                 Dictionary<string, List<FileInfo>> jsonExts;
                 List<FileInfo> files;
                 //Get list of files with the right extension and secondary extension
-                if (jsonFilesByExt.TryGetValue(jLoader.Extension, out jsonExts) && jsonExts.TryGetValue(jLoader.JsonExtension, out files))
+                if (this.jsonFilesByExt.TryGetValue(jLoader.Extension, out jsonExts) && jsonExts.TryGetValue(jLoader.JsonExtension, out files))
                 {
                     Debug.Log("[GameLoader]: Starting IJsonLoader " + jLoader.Name);
                     watch.Restart();
@@ -204,7 +269,7 @@ namespace CursedSummit.Loading
         /// Runs the loading sequence of all created Iloader implementations
         /// </summary>
         /// <returns>Lazy loading coroutine, loading on demand</returns>
-        private IEnumerator RunAllILoaders()
+        private IEnumerator RunAllLoaders()
         {
             Debug.Log("[GameLoader]: Running all ILoader implementations...");
             Stopwatch watch = new Stopwatch();
@@ -213,7 +278,7 @@ namespace CursedSummit.Loading
             {
                 List<FileInfo> files;
                 //Get file list by file extension
-                if (filesByExt.TryGetValue(loader.Extension, out files))
+                if (this.filesByExt.TryGetValue(loader.Extension, out files))
                 {
                     Debug.Log("[GameLoader]: Starting ILoader " + loader.Name);
                     watch.Restart();
@@ -246,18 +311,18 @@ namespace CursedSummit.Loading
         /// <returns>Lazy enumeration of all the types in the current AppDomain</returns>
         private static IEnumerable<Type> GetAllTypes()
         {
-            return AppDomain.CurrentDomain.GetAssemblies()
-                .SelectMany(a =>
-                {
-                    try
-                    {
-                        return a.GetTypes();
-                    }
-                    catch (Exception)
-                    {
-                        return Type.EmptyTypes;
-                    }
-                });
+            return LoadedAssemblies.Select(a => a.Assembly)
+                  .SelectMany(a =>
+                   {
+                       try
+                       {
+                           return a.GetTypes();
+                       }
+                       catch (Exception)
+                       {
+                           return Type.EmptyTypes;
+                       }
+                   });
 
         }
 
@@ -285,17 +350,16 @@ namespace CursedSummit.Loading
             Stopwatch loading = Stopwatch.StartNew(), watch = Stopwatch.StartNew();
             yield return FindAllFiles();
             watch.Stop();
-            Debug.Log($"[GameLoader]: Found {allFiles.Count} files in {watch.Elapsed.TotalSeconds}s");
+            Debug.Log($"[GameLoader]: Found {this.allFiles.Count} files in {watch.Elapsed.TotalSeconds}s");
+
+            //Set current working directory to CSData directory
+            CSUtils.SetCurrentDirectory(CSUtils.CSDataPath);
 
             //Load all external assemblies
-            if (dlls.Count > 0)
-            {
-                watch.Restart();
-                yield return LoadAllDlls();
-                watch.Stop();
-                Debug.Log($"[GameLoader]: Loaded {dlls.Count} external assemblies in {watch.Elapsed.TotalSeconds}s");
-            }
-            else { Debug.Log("[GameLoader]: No external assmblies to load, skipping");}
+            watch.Restart();
+            yield return LoadAllDlls();
+            watch.Stop();
+            Debug.Log($"[GameLoader]: Loaded {LoadedAssemblies.Count} external assemblies in {watch.Elapsed.TotalSeconds}s");
 
             //Find all loader implementations
             watch.Restart();
@@ -303,18 +367,15 @@ namespace CursedSummit.Loading
             watch.Stop();
             Debug.Log($"[GameLoader]: Located {loaders.Count} ILoader implementations and {jsonLoaders.Count} IJsonLoader implementations in {watch.Elapsed.TotalSeconds}s");
 
-            //Set current working directory to CSData directory
-            CSUtils.SetCurrentDirectory(CSUtils.CSDataPath);
-
             //Run all Json loaders
             watch.Restart();
-            yield return RunAllIJsonLoaders();
+            yield return RunAllJsonLoaders();
             watch.Stop();
             Debug.Log($"[GameLoader]: Ran {jsonLoaders.Count} IJsonLoaders in {watch.Elapsed.TotalSeconds}s");
 
             //Run all classic loaders
             watch.Restart();
-            yield return RunAllILoaders();
+            yield return RunAllLoaders();
             watch.Stop();
             Debug.Log($"[GameLoader]: Ran {loaders.Count} ILoaders in {watch.Elapsed.TotalSeconds}s");
 
@@ -322,10 +383,10 @@ namespace CursedSummit.Loading
             CSUtils.ResetCurrentDirectory();
 
             //Clear now unneeded cache
-            dlls = null;
-            allFiles = null;
-            filesByExt = null;
-            jsonFilesByExt = null;
+            this.dlls = null;
+            this.allFiles = null;
+            this.filesByExt = null;
+            this.jsonFilesByExt = null;
 
             //Reset lists size
             loaders = new List<ILoader>(loaders);
