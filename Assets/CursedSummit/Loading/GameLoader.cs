@@ -112,15 +112,35 @@ namespace CursedSummit.Loading
 
         //File lists
         private List<Assembly> assemblies = new List<Assembly>();
-        private List<FileInfo> dlls = new List<FileInfo>();
-        private List<FileInfo> allFiles = new List<FileInfo>();
+        private readonly List<FileInfo> dlls = new List<FileInfo>();
+        private readonly List<FileInfo> allFiles = new List<FileInfo>();
 
         //Extension -> file list dictionaries
-        private Dictionary<string, List<FileInfo>> filesByExt = new Dictionary<string, List<FileInfo>>();
-        private Dictionary<string, Dictionary<string, List<FileInfo>>> jsonFilesByExt = new Dictionary<string, Dictionary<string, List<FileInfo>>>();
+        private readonly Dictionary<string, List<FileInfo>> filesByExt = new Dictionary<string, List<FileInfo>>();
+        private readonly Dictionary<string, Dictionary<string, List<FileInfo>>> jsonFilesByExt = new Dictionary<string, Dictionary<string, List<FileInfo>>>();
         #endregion
 
         #region Methods
+        /// <summary>
+        /// Finds all the types in the currently used assemblies
+        /// </summary>
+        /// <returns>Lazy enumeration of all the types in the current ly needed assemblies</returns>
+        private IEnumerable<Type> GetAllTypes()
+        {
+            return this.assemblies
+                  .SelectMany(a =>
+                  {
+                      try
+                      {
+                          return a.GetTypes();
+                      }
+                      catch (Exception)
+                      {
+                          return Type.EmptyTypes;
+                      }
+                  });
+        }
+
         /// <summary>
         /// Finds all files within the CSData folder and loads them to memory
         /// </summary>
@@ -204,7 +224,8 @@ namespace CursedSummit.Loading
                 LoadedAssembly la = new LoadedAssembly(a, dll);
                 this.assemblies.Add(a);
                 loadedAssemblies.Add(la);
-                assembliesByPath.Add(dll.GetLocalPath(), la);
+                assembliesByPath.Add(la.Path, la);
+                assembliesByName.Add(la.Name, la);
                 yield return null;
             }
             LoadedAssemblies = loadedAssemblies.AsReadOnly();
@@ -327,26 +348,6 @@ namespace CursedSummit.Loading
 
         #region Static methods
         /// <summary>
-        /// Finds all the types in the current AppDomain
-        /// </summary>
-        /// <returns>Lazy enumeration of all the types in the current AppDomain</returns>
-        private static IEnumerable<Type> GetAllTypes()
-        {
-            return LoadedAssemblies.Select(a => a.Assembly)
-                  .SelectMany(a =>
-                   {
-                       try
-                       {
-                           return a.GetTypes();
-                       }
-                       catch (Exception)
-                       {
-                           return Type.EmptyTypes;
-                       }
-                   });
-        }
-
-        /// <summary>
         /// Logs a standard message with the correct prefix
         /// </summary>
         /// <param name="message">Message to log</param>
@@ -421,12 +422,6 @@ namespace CursedSummit.Loading
 
             //Reset workind directory
             CSUtils.ResetCurrentDirectory();
-
-            //Clear now unneeded cache
-            this.dlls = null;
-            this.allFiles = null;
-            this.filesByExt = null;
-            this.jsonFilesByExt = null;
 
             //Reset lists size
             loaders = new List<ILoader>(loaders);
