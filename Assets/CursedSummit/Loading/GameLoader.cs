@@ -10,7 +10,6 @@ using CursedSummit.Extensions;
 using CursedSummit.UI;
 using CursedSummit.Utils;
 using FindFiles;
-using Newtonsoft.Json;
 using UnityEngine;
 using Debug = UnityEngine.Debug;
 
@@ -125,7 +124,7 @@ namespace CursedSummit.Loading
         #endregion
 
         #region Properties
-        private float Progress => (Step * this.stage) + (Step * this.curr);
+        private float Progress => Step * (this.stage + this.curr);
         #endregion
 
         #region Methods
