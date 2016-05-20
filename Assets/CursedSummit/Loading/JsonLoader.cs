@@ -25,11 +25,17 @@ namespace CursedSummit.Loading
         #endregion
 
         #region Properties
-        private int current;
+        int ILoader.Current => this.current;
         /// <summary>
         /// Current file loading index
         /// </summary>
-        int ILoader.Current => this.current;
+        private int current;
+
+        string ILoader.Status => this.status;
+        /// <summary>
+        /// Currentl loading bar status
+        /// </summary>
+        private string status;
 
         /// <summary>
         /// If this loader is done loading
@@ -77,6 +83,8 @@ namespace CursedSummit.Loading
             LoaderInstruction inst = CONTINUE;
             foreach (FileInfo file in files)
             {
+                this.current++;
+                this.status = $"[{this.Name}]: Loading {file.FullName}";
                 string data;
                 try
                 {
@@ -84,7 +92,7 @@ namespace CursedSummit.Loading
                 }
                 catch (Exception e)
                 {
-                    Debug.LogError($"[{this.Name}JsonLoader]: Encountered an exception reading file {file.FullName}.\n{e.GetType().Name}\n{e.StackTrace}");
+                    Debug.LogError($"[{this.Name}]: Encountered an exception reading file {file.FullName}.\n{e.GetType().Name}\n{e.StackTrace}");
                     data = null;
                     inst = BREAK;
                 }
@@ -104,7 +112,6 @@ namespace CursedSummit.Loading
                 yield return inst;
                 paths.Add(file.GetLocalPath(), array);
                 objects.AddRange(array);
-                this.current++;
             }
             this.LoadedObjects = new JsonLoaderList<T>(objects, paths);
             this.Loaded = true;

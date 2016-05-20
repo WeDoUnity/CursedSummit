@@ -32,6 +32,11 @@ namespace CursedSummit.Loading
             public Assembly Assembly { get; }
 
             /// <summary>
+            /// The Assembly's name
+            /// </summary>
+            public string Name { get; }
+
+            /// <summary>
             /// Assembly version
             /// </summary>
             public Version Version { get; }
@@ -63,6 +68,7 @@ namespace CursedSummit.Loading
             internal LoadedAssembly(Assembly assembly, FileInfo file, string path = null, Version version = null)
             {
                 this.Assembly = assembly;
+                this.Name = assembly.GetName().Name;
                 this.File = file;
                 this.DllName = file.Name;
                 this.Path = path ?? file.GetLocalPath();
@@ -70,6 +76,10 @@ namespace CursedSummit.Loading
             }
             #endregion
         }
+
+        #region Constants
+        private const string DebugPrefix = "[GameLoader]: ";
+        #endregion
 
         #region Static fields
         //Loader lists
@@ -115,11 +125,11 @@ namespace CursedSummit.Loading
         private IEnumerator FindAllFiles()
         {
             string localPath = CSUtils.CSDataPath;
-            Debug.Log($"[GameLoader] Locating all files in CSData folder (@{localPath})");
+            Log($"Locating all files in CSData folder (@{localPath})");
             //Locate data folder
             if (!Directory.Exists(localPath))
             {
-                Debug.LogWarning("[GameLoader]: CSData folder could not be located. Creating new one.");
+                Debug.LogWarning(DebugPrefix + "CSData folder could not be located. Creating new one.");
                 Directory.CreateDirectory(localPath);
                 yield break; //Created folder will be empty
             }
@@ -130,6 +140,7 @@ namespace CursedSummit.Loading
                 //Loop through all "normal" files
                 foreach (FileInfo file in e.Matches().Where(f => f.Attributes == FileAttributes.Normal && !string.IsNullOrEmpty(f.Extension)))
                 {
+                    this.loadingbar.SetLabel("Locating file " + file.FullName);
                     List<FileInfo> files;
                     string jsonExt = Path.GetExtension(file.Name);
 
@@ -162,7 +173,7 @@ namespace CursedSummit.Loading
                     files.Add(file);
                     this.allFiles.Add(file);
 
-                    Debug.Log("[GameLoader]: Located " + file.FullName);
+                    Log("Located " + file.FullName);
                     yield return null;
                 }
             }
@@ -174,7 +185,7 @@ namespace CursedSummit.Loading
         /// <returns>Lazy loading coroutine, loading on demand</returns>
         private IEnumerator LoadAllDlls()
         {
-            Debug.Log("[GameLoader]: Loading external assemblies...");
+            Log("Loading external assemblies...");
             LoadedAssemblies = new List<LoadedAssembly>(this.dlls.Count + 1)
             {
                 //Game assembly
@@ -188,7 +199,9 @@ namespace CursedSummit.Loading
             //Loop through all .dll files
             foreach (FileInfo dll in this.dlls)
             {
-                Debug.Log("[GameLoader]: Loading " + dll.FullName);
+                string message = "Loading " + dll.FullName;
+                this.loadingbar.SetLabel(message);
+                Log(message);
                 //Load to current AppDomain
                 LoadedAssemblies.Add(new LoadedAssembly(Assembly.LoadFile(dll.FullName), dll));
                 yield return null;
@@ -201,7 +214,7 @@ namespace CursedSummit.Loading
         /// <returns>Lazy loading coroutine, loading on demand</returns>
         private IEnumerator FetchAllLoaders()
         {
-            Debug.Log("[GameLoader]: Initializing all ILoader interface implementations...");
+            Log("Initializing all ILoader interface implementations...");
             //Loader types
             Type loaderType = typeof(ILoader), jLoaderType = typeof(IJsonLoader);
 
@@ -211,14 +224,18 @@ namespace CursedSummit.Loading
                 //If IJsonLoader
                 if (type.IsAssignableFrom(jLoaderType))
                 {
-                    Debug.Log($"[GameLoader]: Initializing IJsonLoader {type.FullName} in {type.Assembly.FullName}");
+                    string message = $"Initializing IJsonLoader {type.FullName} in {type.Assembly.FullName}";
+                    this.loadingbar.SetLabel(message);
+                    Log(message);
                     //Create new instance
                     jsonLoaders.Add((IJsonLoader)Activator.CreateInstance(type));
                 }
                 //Else, assume ILoader
                 else
                 {
-                    Debug.Log($"[GameLoader]: Initializing ILoader {type.FullName} in {type.Assembly.FullName}");
+                    string message = $"Initializing ILoader {type.FullName} in {type.Assembly.FullName}";
+                    this.loadingbar.SetLabel(message);
+                    Log(message);
                     //Create new instance
                     loaders.Add((ILoader)Activator.CreateInstance(type));
                 }
@@ -232,7 +249,7 @@ namespace CursedSummit.Loading
         /// <returns>Lazy loading coroutine, loading on demand</returns>
         private IEnumerator RunAllJsonLoaders()
         {
-            Debug.Log("[GameLoader]: Running all IJsonLoader implementations...");
+            Log("Running all IJsonLoader implementations...");
             Stopwatch watch = new Stopwatch();
             //Loop through loaders
             foreach (IJsonLoader jLoader in jsonLoaders)
@@ -242,26 +259,27 @@ namespace CursedSummit.Loading
                 //Get list of files with the right extension and secondary extension
                 if (this.jsonFilesByExt.TryGetValue(jLoader.Extension, out jsonExts) && jsonExts.TryGetValue(jLoader.JsonExtension, out files))
                 {
-                    Debug.Log("[GameLoader]: Starting IJsonLoader " + jLoader.Name);
+                    Log("Starting IJsonLoader " + jLoader.Name);
                     watch.Restart();
                     using (IEnumerator<LoaderInstruction> e = jLoader.LoadAll(files))
                     {
                         //Run loading sequence
                         while (e.MoveNext())
                         {
+                            this.loadingbar.SetLabel(jLoader.Status);
                             //If abort instruction is encountered
                             if (e.Current == LoaderInstruction.BREAK)
                             {
-                                Debug.Log($"[GameLoader]: Encountered BREAK statement during {jLoader.Name} execution, aborting");
+                                Log($"Encountered BREAK statement during {jLoader.Name} execution, aborting");
                                 break;
                             }
                             yield return null;
                         }
                     }
                     watch.Stop();
-                    Debug.Log($"[GameLoader]: Ran {jLoader.Name} in {watch.Elapsed.TotalSeconds}");
+                    Log($"Ran {jLoader.Name} in {watch.Elapsed.TotalSeconds}");
                 }
-                else { Debug.Log($"[GameLoader]: No files of {jLoader.JsonExtension} Json extension under file extension {jLoader.Extension}, skipping IJsonLoader {jLoader.Name}"); }
+                else { Log($"No files of {jLoader.JsonExtension} Json extension under file extension {jLoader.Extension}, skipping IJsonLoader {jLoader.Name}"); }
             }
         }
 
@@ -271,7 +289,7 @@ namespace CursedSummit.Loading
         /// <returns>Lazy loading coroutine, loading on demand</returns>
         private IEnumerator RunAllLoaders()
         {
-            Debug.Log("[GameLoader]: Running all ILoader implementations...");
+            Log("Running all ILoader implementations...");
             Stopwatch watch = new Stopwatch();
             //Loop through loaders
             foreach (ILoader loader in loaders)
@@ -280,26 +298,27 @@ namespace CursedSummit.Loading
                 //Get file list by file extension
                 if (this.filesByExt.TryGetValue(loader.Extension, out files))
                 {
-                    Debug.Log("[GameLoader]: Starting ILoader " + loader.Name);
+                    Log("Starting ILoader " + loader.Name);
                     watch.Restart();
                     using (IEnumerator<LoaderInstruction> e = loader.LoadAll(files))
                     {
+                        this.loadingbar.SetLabel(loader.Status);
                         //Run loading sequence
                         while (e.MoveNext())
                         {
                             //If abort instruction is encountered
                             if (e.Current == LoaderInstruction.BREAK)
                             {
-                                Debug.Log($"[GameLoader]: Encountered BREAK statement during {loader.Name} execution, aborting");
+                                Log($"Encountered BREAK statement during {loader.Name} execution, aborting");
                                 break;
                             }
                             yield return null;
                         }
                     }
                     watch.Stop();
-                    Debug.Log($"[GameLoader]: Ran {loader.Name} in {watch.Elapsed.TotalSeconds}");
+                    Log($"Ran {loader.Name} in {watch.Elapsed.TotalSeconds}");
                 }
-                else { Debug.Log($"[GameLoader]: No files of {loader.Extension} extension, skipping ILoader {loader.Name}"); }
+                else { Log($"No files of {loader.Extension} extension, skipping ILoader {loader.Name}"); }
             }
         }
         #endregion
@@ -323,8 +342,13 @@ namespace CursedSummit.Loading
                            return Type.EmptyTypes;
                        }
                    });
-
         }
+
+        /// <summary>
+        /// Logs a standard message with the correct prefix
+        /// </summary>
+        /// <param name="message">Message to log</param>
+        private static void Log(string message) => Debug.Log(DebugPrefix + message);
 
         /// <summary>
         /// Gets the first ILoader implementation of type <typeparamref name="T"/>
@@ -339,18 +363,23 @@ namespace CursedSummit.Loading
         /// <typeparam name="T">Loader implementation type</typeparam>
         /// <returns>The active instance of the loader, or null if none was found</returns>
         public static T GetJsonLoaderInstance<T>() where T : class, IJsonLoader => (T)jsonLoaders.FirstOrDefault(jl => jl is T);
+
+        /// <summary>
+        /// Gets the LoadedAssembly with the given .dll name
+        /// </summary>
+        /// <param name="dllName">Dll name to look for</param>
+        /// <returns>The first matching assembly. Throws if none was found.</returns>
+        public static LoadedAssembly GetLoadedAssembly(string dllName) => LoadedAssemblies.First(a => a.DllName == dllName);
         #endregion
 
         #region Functions
         private IEnumerator Start()
         {
-            //TODO: Hook everything to the loading bar
-
             //Locate files in CSData folder
             Stopwatch loading = Stopwatch.StartNew(), watch = Stopwatch.StartNew();
             yield return FindAllFiles();
             watch.Stop();
-            Debug.Log($"[GameLoader]: Found {this.allFiles.Count} files in {watch.Elapsed.TotalSeconds}s");
+            Log($"Found {this.allFiles.Count} files in {watch.Elapsed.TotalSeconds}s");
 
             //Set current working directory to CSData directory
             CSUtils.SetCurrentDirectory(CSUtils.CSDataPath);
@@ -359,25 +388,25 @@ namespace CursedSummit.Loading
             watch.Restart();
             yield return LoadAllDlls();
             watch.Stop();
-            Debug.Log($"[GameLoader]: Loaded {LoadedAssemblies.Count} external assemblies in {watch.Elapsed.TotalSeconds}s");
+            Log($"Loaded {LoadedAssemblies.Count} external assemblies in {watch.Elapsed.TotalSeconds}s");
 
             //Find all loader implementations
             watch.Restart();
             yield return FetchAllLoaders();
             watch.Stop();
-            Debug.Log($"[GameLoader]: Located {loaders.Count} ILoader implementations and {jsonLoaders.Count} IJsonLoader implementations in {watch.Elapsed.TotalSeconds}s");
+            Log($"Located {loaders.Count} ILoader implementations and {jsonLoaders.Count} IJsonLoader implementations in {watch.Elapsed.TotalSeconds}s");
 
             //Run all Json loaders
             watch.Restart();
             yield return RunAllJsonLoaders();
             watch.Stop();
-            Debug.Log($"[GameLoader]: Ran {jsonLoaders.Count} IJsonLoaders in {watch.Elapsed.TotalSeconds}s");
+            Log($"Ran {jsonLoaders.Count} IJsonLoaders in {watch.Elapsed.TotalSeconds}s");
 
             //Run all classic loaders
             watch.Restart();
             yield return RunAllLoaders();
             watch.Stop();
-            Debug.Log($"[GameLoader]: Ran {loaders.Count} ILoaders in {watch.Elapsed.TotalSeconds}s");
+            Log($"Ran {loaders.Count} ILoaders in {watch.Elapsed.TotalSeconds}s");
 
             //Reset workind directory
             CSUtils.ResetCurrentDirectory();
@@ -395,7 +424,7 @@ namespace CursedSummit.Loading
             //Complete
             loading.Stop();
             Loaded = true;
-            Debug.Log($"[GameLoader]: Completed loading sequence in {loading.Elapsed.TotalSeconds}s, going to main menu...");
+            Log($"Completed loading sequence in {loading.Elapsed.TotalSeconds}s, going to main menu...");
             GameLogic.Instance.LoadScene(GameScenes.MENU);
         }
 

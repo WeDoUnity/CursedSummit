@@ -33,6 +33,11 @@ namespace CursedSummit.Loading
         int Current { get; }
 
         /// <summary>
+        /// Loading status string
+        /// </summary>
+        string Status { get; }
+
+        /// <summary>
         /// Name of the loader
         /// </summary>
         string Name { get; }
