@@ -10,6 +10,7 @@ using CursedSummit.Extensions;
 using CursedSummit.UI;
 using CursedSummit.Utils;
 using FindFiles;
+using Newtonsoft.Json;
 using UnityEngine;
 using Debug = UnityEngine.Debug;
 
@@ -64,8 +65,6 @@ namespace CursedSummit.Loading
             /// </summary>
             /// <param name="assembly">Assembly being loaded</param>
             /// <param name="file">Assembly file</param>
-            /// <param name="path">Assembly path. Defaults to local path from the CSData folder</param>
-            /// <param name="version">Assembly version. Defaults to AssemblyInformationalVersion, or AssemblyVersion</param>
             internal LoadedAssembly(Assembly assembly, FileInfo file)
             {
                 this.Assembly = assembly;
@@ -80,6 +79,7 @@ namespace CursedSummit.Loading
 
         #region Constants
         private const string DebugPrefix = "[GameLoader]: ";
+        private const float Step = 0.25f;
         #endregion
 
         #region Static fields
@@ -107,8 +107,12 @@ namespace CursedSummit.Loading
         #endregion
 
         #region Fields
+        //Loading bar
         [SerializeField]
-        private Progressbar loadingbar;    //Loading bar
+        private Progressbar loadingbar;
+        private int stage;
+        private float curr;
+        private Stopwatch watch;
 
         //File lists
         private List<Assembly> assemblies = new List<Assembly>();
@@ -118,6 +122,10 @@ namespace CursedSummit.Loading
         //Extension -> file list dictionaries
         private readonly Dictionary<string, List<FileInfo>> filesByExt = new Dictionary<string, List<FileInfo>>();
         private readonly Dictionary<string, Dictionary<string, List<FileInfo>>> jsonFilesByExt = new Dictionary<string, Dictionary<string, List<FileInfo>>>();
+        #endregion
+
+        #region Properties
+        private float Progress => (Step * this.stage) + (Step * this.curr);
         #endregion
 
         #region Methods
@@ -212,12 +220,14 @@ namespace CursedSummit.Loading
             this.assemblies = new List<Assembly>(this.dlls.Count + 1) { typeof(GameLoader).Assembly };
             List<LoadedAssembly> loadedAssemblies = new List<LoadedAssembly>(this.dlls.Count);
             yield return null;
-
+            float f = 0;
             //Loop through all .dll files
             foreach (FileInfo dll in this.dlls)
             {
                 string message = "Loading " + dll.FullName;
-                this.loadingbar.SetLabel(message);
+                this.curr = f++ / this.dlls.Count;
+                SetLoading(message);
+                
                 Log(message);
                 //Load to memory
                 Assembly a = Assembly.LoadFile(dll.FullName);
@@ -232,7 +242,7 @@ namespace CursedSummit.Loading
         }
 
         /// <summary>
-        /// Finds all ILoader and IJsonLoader implementations in the current AppDomain and creates instances of them
+        /// Finds all ILoader and IJsonLoader implementations in the current LoadedAssemblies and creates instances of them
         /// </summary>
         /// <returns>Lazy loading coroutine, loading on demand</returns>
         private IEnumerator FetchAllLoaders()
@@ -274,9 +284,13 @@ namespace CursedSummit.Loading
         {
             Log("Running all IJsonLoader implementations...");
             Stopwatch watch = new Stopwatch();
+            float ratio = 1f / jsonLoaders.Count;
+            float f1 = -1;
             //Loop through loaders
             foreach (IJsonLoader jLoader in jsonLoaders)
             {
+                f1++;
+                float f2 = 0;
                 Dictionary<string, List<FileInfo>> jsonExts;
                 List<FileInfo> files;
                 //Get list of files with the right extension and secondary extension
@@ -289,7 +303,8 @@ namespace CursedSummit.Loading
                         //Run loading sequence
                         while (e.MoveNext())
                         {
-                            this.loadingbar.SetLabel(jLoader.Status);
+                            this.curr = (f1 + (f2++ / files.Count)) * ratio;
+                            SetLoading(jLoader.Status);
                             //If abort instruction is encountered
                             if (e.Current == LoaderInstruction.BREAK)
                             {
@@ -314,9 +329,13 @@ namespace CursedSummit.Loading
         {
             Log("Running all ILoader implementations...");
             Stopwatch watch = new Stopwatch();
+            float ratio = 1f / loaders.Count;
+            float f1 = -1;
             //Loop through loaders
             foreach (ILoader loader in loaders)
             {
+                f1++;
+                float f2 = 0;
                 List<FileInfo> files;
                 //Get file list by file extension
                 if (this.filesByExt.TryGetValue(loader.Extension, out files))
@@ -325,10 +344,11 @@ namespace CursedSummit.Loading
                     watch.Restart();
                     using (IEnumerator<LoaderInstruction> e = loader.LoadAll(files))
                     {
-                        this.loadingbar.SetLabel(loader.Status);
                         //Run loading sequence
                         while (e.MoveNext())
                         {
+                            this.curr = (f1 + (f2++ / files.Count)) * ratio;
+                            SetLoading(loader.Status);
                             //If abort instruction is encountered
                             if (e.Current == LoaderInstruction.BREAK)
                             {
@@ -343,6 +363,27 @@ namespace CursedSummit.Loading
                 }
                 else { Log($"No files of {loader.Extension} extension, skipping ILoader {loader.Name}"); }
             }
+        }
+
+        /// <summary>
+        /// Resets Loadingbar related objects at the end of a loading coroutine
+        /// </summary>
+        private void EndLoader()
+        {
+            this.watch.Stop();
+            this.curr = 0;
+            this.stage++;
+            this.loadingbar.SetProgress(this.Progress);
+        }
+
+        /// <summary>
+        /// Sets the loadingbar's label and progress simultaneously
+        /// </summary>
+        /// <param name="message">Progressbar message</param>
+        private void SetLoading(string message)
+        {
+            this.loadingbar.SetLabel(message);
+            this.loadingbar.SetProgress(this.Progress);
         }
         #endregion
 
@@ -388,37 +429,40 @@ namespace CursedSummit.Loading
         private IEnumerator Start()
         {
             //Locate files in CSData folder
-            Stopwatch loading = Stopwatch.StartNew(), watch = Stopwatch.StartNew();
+            Stopwatch loading = Stopwatch.StartNew();
+            this.watch = Stopwatch.StartNew();
             yield return FindAllFiles();
-            watch.Stop();
-            Log($"Found {this.allFiles.Count} files in {watch.Elapsed.TotalSeconds}s");
+            this.watch.Stop();
+            Log($"Found {this.allFiles.Count} files in {this.watch.Elapsed.TotalSeconds}s");
 
             //Set current working directory to CSData directory
             CSUtils.SetCurrentDirectory(CSUtils.CSDataPath);
 
             //Load all external assemblies
-            watch.Restart();
+            this.watch.Restart();
             yield return LoadAllDlls();
-            watch.Stop();
-            Log($"Loaded {LoadedAssemblies.Count} external assemblies in {watch.Elapsed.TotalSeconds}s");
+            EndLoader();
+            Log($"Loaded {LoadedAssemblies.Count} external assemblies in {this.watch.Elapsed.TotalSeconds}s");
 
             //Find all loader implementations
-            watch.Restart();
+            this.watch.Restart();
             yield return FetchAllLoaders();
-            watch.Stop();
-            Log($"Located {loaders.Count} ILoader implementations and {jsonLoaders.Count} IJsonLoader implementations in {watch.Elapsed.TotalSeconds}s");
+            EndLoader();
+            Log($"Located {loaders.Count} ILoader implementations and {jsonLoaders.Count} IJsonLoader implementations in {this.watch.Elapsed.TotalSeconds}s");
 
             //Run all Json loaders
-            watch.Restart();
+            this.watch.Restart();
             yield return RunAllJsonLoaders();
-            watch.Stop();
-            Log($"Ran {jsonLoaders.Count} IJsonLoaders in {watch.Elapsed.TotalSeconds}s");
+            EndLoader();
+            Log($"Ran {jsonLoaders.Count} IJsonLoaders in {this.watch.Elapsed.TotalSeconds}s");
 
             //Run all classic loaders
-            watch.Restart();
+            this.watch.Restart();
             yield return RunAllLoaders();
-            watch.Stop();
-            Log($"Ran {loaders.Count} ILoaders in {watch.Elapsed.TotalSeconds}s");
+            EndLoader();
+            this.loadingbar.SetLabel("Complete");
+            this.loadingbar.SetProgress(1);
+            Log($"Ran {loaders.Count} ILoaders in {this.watch.Elapsed.TotalSeconds}s");
 
             //Reset workind directory
             CSUtils.ResetCurrentDirectory();
