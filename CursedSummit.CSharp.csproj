@@ -83,6 +83,7 @@
     <Compile Include="Assets\CursedSummit\Loading\JsonLoaderList.cs" />
     <Compile Include="Assets\CursedSummit\Loading\Loader.cs" />
     <Compile Include="Assets\CursedSummit\Loading\LoaderList.cs" />
+    <Compile Include="Assets\CursedSummit\Loading\Loaders\TextureLoader.cs" />
     <Compile Include="Assets\FileSystemEnumerator\FileSystemEnumerator.cs" />
     <Compile Include="Assets\CursedSummit\Loading\GameLoader.cs" />
     <Compile Include="Assets\CursedSummit\GameLogic.cs" />
