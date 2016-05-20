@@ -1,6 +1,7 @@
 ﻿using System;
 using System.Collections;
 using System.Collections.Generic;
+using System.Collections.ObjectModel;
 using System.Diagnostics;
 using System.IO;
 using System.Linq;
@@ -65,14 +66,14 @@ namespace CursedSummit.Loading
             /// <param name="file">Assembly file</param>
             /// <param name="path">Assembly path. Defaults to local path from the CSData folder</param>
             /// <param name="version">Assembly version. Defaults to AssemblyInformationalVersion, or AssemblyVersion</param>
-            internal LoadedAssembly(Assembly assembly, FileInfo file, string path = null, Version version = null)
+            internal LoadedAssembly(Assembly assembly, FileInfo file)
             {
                 this.Assembly = assembly;
                 this.Name = assembly.GetName().Name;
                 this.File = file;
                 this.DllName = file.Name;
-                this.Path = path ?? file.GetLocalPath();
-                this.Version = version ?? assembly.GetVersion();
+                this.Path = file.GetLocalPath();
+                this.Version = assembly.GetVersion();
             }
             #endregion
         }
@@ -83,8 +84,9 @@ namespace CursedSummit.Loading
 
         #region Static fields
         //Loader lists
-        private static List<ILoader> loaders = new List<ILoader>();
-        private static List<IJsonLoader> jsonLoaders = new List<IJsonLoader>();
+        private static List<ILoader> loaders;
+        private static List<IJsonLoader> jsonLoaders;
+        private static Dictionary<string, LoadedAssembly> assembliesByPath, assembliesByName;
         #endregion
 
         #region Static properties
@@ -101,7 +103,7 @@ namespace CursedSummit.Loading
         /// <summary>
         /// All currently loaded game/mods loaded assemblies
         /// </summary>
-        public static List<LoadedAssembly> LoadedAssemblies { get; private set; }
+        public static ReadOnlyCollection<LoadedAssembly> LoadedAssemblies { get; private set; }
         #endregion
 
         #region Fields
@@ -109,6 +111,7 @@ namespace CursedSummit.Loading
         private Progressbar loadingbar;    //Loading bar
 
         //File lists
+        private List<Assembly> assemblies = new List<Assembly>();
         private List<FileInfo> dlls = new List<FileInfo>();
         private List<FileInfo> allFiles = new List<FileInfo>();
 
@@ -186,14 +189,8 @@ namespace CursedSummit.Loading
         private IEnumerator LoadAllDlls()
         {
             Log("Loading external assemblies...");
-            LoadedAssemblies = new List<LoadedAssembly>(this.dlls.Count + 1)
-            {
-                //Game assembly
-                new LoadedAssembly(typeof(GameLoader).Assembly,
-                                   new FileInfo(Path.Combine(Application.dataPath, "Managed/Assembly-CSharp.dll")),
-                                   "../CursedSummit_Data/Managed/Assembly-CSharp.dll",
-                                   GameVersion.Version)
-            };
+            this.assemblies = new List<Assembly>(this.dlls.Count + 1) { typeof(GameLoader).Assembly };
+            List<LoadedAssembly> loadedAssemblies = new List<LoadedAssembly>(this.dlls.Count);
             yield return null;
 
             //Loop through all .dll files
@@ -202,10 +199,15 @@ namespace CursedSummit.Loading
                 string message = "Loading " + dll.FullName;
                 this.loadingbar.SetLabel(message);
                 Log(message);
-                //Load to current AppDomain
-                LoadedAssemblies.Add(new LoadedAssembly(Assembly.LoadFile(dll.FullName), dll));
+                //Load to memory
+                Assembly a = Assembly.LoadFile(dll.FullName);
+                LoadedAssembly la = new LoadedAssembly(a, dll);
+                this.assemblies.Add(a);
+                loadedAssemblies.Add(la);
+                assembliesByPath.Add(dll.GetLocalPath(), la);
                 yield return null;
             }
+            LoadedAssemblies = loadedAssemblies.AsReadOnly();
         }
 
         /// <summary>
@@ -365,11 +367,20 @@ namespace CursedSummit.Loading
         public static T GetJsonLoaderInstance<T>() where T : class, IJsonLoader => (T)jsonLoaders.FirstOrDefault(jl => jl is T);
 
         /// <summary>
-        /// Gets the LoadedAssembly with the given .dll name
+        /// Tries to find a LoadedAssembly from the given .dll file name. This uses a dictionary, so runs in ammortized O(1) time.
         /// </summary>
-        /// <param name="dllName">Dll name to look for</param>
-        /// <returns>The first matching assembly. Throws if none was found.</returns>
-        public static LoadedAssembly GetLoadedAssembly(string dllName) => LoadedAssemblies.First(a => a.DllName == dllName);
+        /// <param name="dllName">Dll name to find</param>
+        /// <param name="assembly">Variable where the found LoadedAssembly is placed</param>
+        /// <returns>True if a match was found, false otherwise</returns>
+        public static bool TryGetAssemblyByName(string dllName, out LoadedAssembly assembly) => assembliesByName.TryGetValue(dllName, out assembly);
+
+        /// <summary>
+        /// Tries to find a LoadedAssembly at the given local path. This uses a dictionary, so runs in ammortized O(1) time.
+        /// </summary>
+        /// <param name="path">Path to find the .dll at</param>
+        /// <param name="assembly">Variable where the found LoadedAssembly is placed</param>
+        /// <returns>True if a match was found, false otherwise</returns>
+        public static bool TryGetAssemblyByPath(string path, out LoadedAssembly assembly) => assembliesByPath.TryGetValue(path, out assembly);
         #endregion
 
         #region Functions
@@ -430,8 +441,13 @@ namespace CursedSummit.Loading
 
         private void Awake()
         {
-            if (!Initialized) { Initialized = true; }
-            else { Destroy(this); }
+            if (Initialized) { Destroy(this); return; }
+
+            loaders = new List<ILoader>();
+            jsonLoaders = new List<IJsonLoader>();
+            assembliesByPath = new Dictionary<string, LoadedAssembly>();
+            assembliesByName = new Dictionary<string, LoadedAssembly>();
+            Initialized = true;
         }
         #endregion
     }
