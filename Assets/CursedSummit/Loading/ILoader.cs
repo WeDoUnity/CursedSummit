@@ -119,4 +119,18 @@ namespace CursedSummit.Loading
         JsonLoaderList<T> LoadedObjects { get; }
         #endregion
     }
+
+    /// <summary>
+    /// Interface indicating a specific loader can load files of multiple different file extensions.
+    /// To be used exclusively with an ILoader implementation, not supported with IJsonLoader.
+    /// </summary>
+    public interface IMultipleExtensions
+    {
+        #region Properties
+        /// <summary>
+        /// Additional extensions to load (do not include the value of ILoader.Extension)
+        /// </summary>
+        string[] ExtraExtensions { get; }
+        #endregion
+    }
 }

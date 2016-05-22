@@ -335,9 +335,21 @@ namespace CursedSummit.Loading
             {
                 f1++;
                 float f2 = 0;
-                List<FileInfo> files;
+                List<FileInfo> exts, files = new List<FileInfo>();
+                if(this.filesByExt.TryGetValue(loader.Extension, out exts)) { files.AddRange(exts); }
+
+                //Check for extra extensions
+                IMultipleExtensions extras = loader as IMultipleExtensions;
+                if (extras?.ExtraExtensions.Length > 0)
+                {
+                    foreach (string ext in extras.ExtraExtensions)
+                    {
+                        if (this.filesByExt.TryGetValue(ext, out exts)) { files.AddRange(exts); }
+                    }
+                }
+
                 //Get file list by file extension
-                if (this.filesByExt.TryGetValue(loader.Extension, out files))
+                if (files.Count > 0)
                 {
                     Log("Starting ILoader " + loader.Name);
                     watch.Restart();

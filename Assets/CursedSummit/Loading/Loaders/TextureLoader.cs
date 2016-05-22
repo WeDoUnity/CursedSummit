@@ -6,8 +6,16 @@ namespace CursedSummit.Loading.Loaders
     /// <summary>
     /// A .png texture loader
     /// </summary>
-    public class TextureLoader : Loader<Texture2D>
+    public class TextureLoader : Loader<Texture2D>, IMultipleExtensions
     {
+        #region Static fields
+        string[] IMultipleExtensions.ExtraExtensions => ExtraExtensions;
+        /// <summary>
+        /// Extra file extensions to load
+        /// </summary>
+        private static readonly string[] ExtraExtensions = { ".jpg" };
+        #endregion
+
         #region Properties
         /// <summary>
         /// Loader name
@@ -28,7 +36,7 @@ namespace CursedSummit.Loading.Loaders
         /// <returns>The loaded texture, or null if it failed.</returns>
         public override Texture2D LoadObject(FileInfo file)
         {
-            Texture2D texture = new Texture2D(1, 1, TextureFormat.ARGB32, false);
+            Texture2D texture = new Texture2D(1, 1);
             return texture.LoadImage(File.ReadAllBytes(file.FullName)) ? texture : null;
         }
         #endregion
