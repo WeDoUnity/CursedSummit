@@ -59,7 +59,7 @@ namespace CursedSummit.Loading
         /// </summary>
         /// <param name="files">All files of this type to load</param>
         /// <returns>The loading coroutine</returns>
-        IEnumerator<LoaderInstruction> LoadAll(List<FileInfo> files);
+        IEnumerator<LoaderInstruction> LoadAll(IList<FileInfo> files);
         #endregion
     }
 

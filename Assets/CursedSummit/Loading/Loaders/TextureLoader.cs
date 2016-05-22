@@ -8,7 +8,7 @@ namespace CursedSummit.Loading.Loaders
     /// </summary>
     public class TextureLoader : Loader<Texture2D>, IMultipleExtensions
     {
-        #region Static fields
+        #region Constants
         string[] IMultipleExtensions.ExtraExtensions => ExtraExtensions;
         /// <summary>
         /// Extra file extensions to load

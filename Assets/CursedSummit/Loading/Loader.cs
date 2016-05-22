@@ -67,7 +67,7 @@ namespace CursedSummit.Loading
         /// </summary>
         /// <param name="files">Specific files to load</param>
         /// <returns>Enumerator returns loading instructions (continue/break out)</returns>
-        IEnumerator<LoaderInstruction> ILoader.LoadAll(List<FileInfo> files)
+        IEnumerator<LoaderInstruction> ILoader.LoadAll(IList<FileInfo> files)
         {
             if (this.Loaded) { yield break; }
 

@@ -335,8 +335,10 @@ namespace CursedSummit.Loading
             {
                 f1++;
                 float f2 = 0;
-                List<FileInfo> exts, files = new List<FileInfo>();
-                if(this.filesByExt.TryGetValue(loader.Extension, out exts)) { files.AddRange(exts); }
+                //Get main files
+                List<FileInfo> exts;
+                this.filesByExt.TryGetValue(loader.Extension, out exts);
+                IEnumerable<FileInfo> temp = exts ?? new List<FileInfo>();
 
                 //Check for extra extensions
                 IMultipleExtensions extras = loader as IMultipleExtensions;
@@ -344,11 +346,12 @@ namespace CursedSummit.Loading
                 {
                     foreach (string ext in extras.ExtraExtensions)
                     {
-                        if (this.filesByExt.TryGetValue(ext, out exts)) { files.AddRange(exts); }
+                        if (this.filesByExt.TryGetValue(ext, out exts)) { temp = temp.Concat(exts); }
                     }
                 }
 
                 //Get file list by file extension
+                IList<FileInfo> files = temp as IList<FileInfo> ?? temp.ToList();
                 if (files.Count > 0)
                 {
                     Log("Starting ILoader " + loader.Name);
@@ -481,11 +484,15 @@ namespace CursedSummit.Loading
             //Reset lists size
             loaders = new List<ILoader>(loaders);
             jsonLoaders = new List<IJsonLoader>(jsonLoaders);
+            assembliesByPath = new Dictionary<string, LoadedAssembly>(assembliesByPath);
+            assembliesByName = new Dictionary<string, LoadedAssembly>(assembliesByName);
 
             //Complete
             loading.Stop();
             Loaded = true;
             Log($"Completed loading sequence in {loading.Elapsed.TotalSeconds}s, going to main menu...");
+
+            yield return new WaitForSeconds(1);
             GameLogic.Instance.LoadScene(GameScenes.MENU);
         }
 
