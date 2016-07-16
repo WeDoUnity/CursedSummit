@@ -1,7 +1,10 @@
 ﻿using CursedSummit.Utils;
 using UnityEngine;
-using UnityEditor;
 using UnityEngine.SceneManagement;
+
+#if UNITY_EDITOR
+using UnityEditor;
+#endif
 
 namespace CursedSummit
 {
