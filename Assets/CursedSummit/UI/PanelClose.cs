@@ -6,7 +6,7 @@ namespace CursedSummit.UI
     /// <summary>
     /// Closes the given panel on button click
     /// </summary>
-    [RequireComponent(typeof(Button))]
+    [RequireComponent(typeof(Button)), AddComponentMenu("UI/Panel Close"), DisallowMultipleComponent]
     public class PanelClose : MonoBehaviour
     {
         #region Fields

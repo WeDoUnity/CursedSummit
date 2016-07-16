@@ -2,6 +2,12 @@
 
 namespace CursedSummit.Utils
 {
+    /// <summary>
+    /// Collection of 949 Color objects, taken from the XKCD Colour Survey
+    /// https://blog.xkcd.com/2010/05/03/color-survey-results/
+    /// Parsed from this: http://forum.unity3d.com/threads/xkcd-colors-in-unity.85896/
+    /// Using this tool: https://github.com/StupidChris/XKCDColourParser
+    /// </summary>
     public static class XKCDColours
     {
         #region Static properties

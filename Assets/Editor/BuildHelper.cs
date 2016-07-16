@@ -1,6 +1,8 @@
 ﻿using System;
+using System.CodeDom;
 using System.Globalization;
 using System.IO;
+using CursedSummit.Utils;
 using UnityEditor;
 using UnityEditor.Callbacks;
 using UnityEngine;
@@ -17,21 +19,28 @@ namespace CursedSummit.Editor
         /// <summary>
         /// Name of the BuildID file
         /// </summary>
-        private const string file = "buildID.build";
+        private const string FileName = "buildID.build";
         /// <summary>
         /// Game build folder path of the BuildID file
         /// </summary>
-        private const string buildFile = "_Data/buildID.build";
+        private const string BuildFileName = "_Data/buildID.build";
         /// <summary>
         /// Separator of the build time and version number
         /// </summary>
-        private static readonly string[] delim = { "UTC|v" };
+        private static readonly string[] Delim = { "UTC|v" };
+        /// <summary>
+        /// File path of the BuildID
+        /// </summary>
+        private static readonly string FilePath = Path.Combine(Application.dataPath, FileName);
+        /// <summary>
+        /// Full folder path to the CSData folder
+        /// </summary>
+        private static readonly DirectoryInfo CSDataDir = new DirectoryInfo(Path.Combine(Application.dataPath, "/../" + CSUtils.CSDataFolderName));
         #endregion
 
         #region Static fields
         private static int major, minor, build, revision;   //Version number
         private static string date;                         //Last build date
-        private static readonly string path;                //BuildID full file path
         #endregion
 
         #region Static properties
@@ -58,10 +67,9 @@ namespace CursedSummit.Editor
         /// </summary>
         static Build()
         {
-            path = Path.Combine(Application.dataPath, file);
-            if (File.Exists(path))
+            if (File.Exists(FilePath))
             {
-                string[] info = File.ReadAllLines(path)[0].Split(delim, StringSplitOptions.RemoveEmptyEntries);
+                string[] info = File.ReadAllLines(FilePath)[0].Split(Delim, StringSplitOptions.RemoveEmptyEntries);
                 date = info[0];
                 string[] version = info[1].Split('.');
                 major = int.Parse(version[0]);
@@ -86,13 +94,37 @@ namespace CursedSummit.Editor
         [PostProcessBuild]
         public static void OnBuild(BuildTarget target, string pathToBuild)
         {
+            //Setup build file
             revision++;
             date = CurrentDate;
             string buildID = Version;
             Debug.Log(string.Format("Built version v{0}, at {1}UTC", buildID, date));
             string[] lines =  { date + "UTC|v" + buildID };
-            File.WriteAllLines(path, lines);
-            File.WriteAllLines(Path.ChangeExtension(pathToBuild, null) + buildFile, lines);
+
+            //Write build file
+            File.WriteAllLines(FilePath, lines);
+            File.WriteAllLines(Path.ChangeExtension(pathToBuild, null) + BuildFileName, lines);
+
+            //Copy CSData directory
+            string destination = Path.Combine(new FileInfo(pathToBuild).DirectoryName, CSUtils.CSDataFolderName);
+            CopyDirectory(CSDataDir, Directory.Exists(destination) ? new DirectoryInfo(destination) : Directory.CreateDirectory(destination));
+        }
+
+        /// <summary>
+        /// Fully copies a directory and all it's files to a target directory
+        /// </summary>
+        /// <param name="source">Source directory</param>
+        /// <param name="target">Target directory</param>
+        private static void CopyDirectory(DirectoryInfo source, DirectoryInfo target)
+        {
+            foreach (DirectoryInfo dir in source.GetDirectories())
+            {
+                CopyDirectory(dir, target.CreateSubdirectory(dir.Name));
+            }
+            foreach (FileInfo file in source.GetFiles())
+            {
+                file.CopyTo(Path.Combine(target.FullName, file.Name));
+            }
         }
 
         /// <summary>
@@ -163,7 +195,7 @@ namespace CursedSummit.Editor
         {
             string buildID = Version;
             Debug.Log("Saving version v" + buildID);
-            File.WriteAllLines(path, new[] { date + "UTC|v" + buildID });
+            File.WriteAllLines(FilePath, new[] { date + "UTC|v" + buildID });
         }
 
         /// <summary>

@@ -1,11 +1,15 @@
 fileFormatVersion: 2
 guid: 7e04bc1a8afd0df4c9eb686413a003de
-timeCreated: 1463197703
+timeCreated: 1463382676
 licenseType: Free
 MonoImporter:
   serializedVersion: 2
-  defaultReferences: []
-  executionOrder: 0
+  defaultReferences:
+  - version: {instanceID: 0}
+  - window: {instanceID: 0}
+  - logPrefab: {fileID: 111060, guid: 0741079e82b3a874bac440ceaea557ae, type: 2}
+  - layout: {instanceID: 0}
+  executionOrder: -5000
   icon: {instanceID: 0}
   userData: 
   assetBundleName: 
