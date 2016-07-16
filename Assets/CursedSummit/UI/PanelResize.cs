@@ -4,7 +4,10 @@ using UnityEngine.EventSystems;
 
 namespace CursedSummit.UI
 {
-    [RequireComponent(typeof(RectTransform))]
+    /// <summary>
+    /// Allows resizing of panel when dragging this RectTransform
+    /// </summary>
+    [RequireComponent(typeof(RectTransform)), AddComponentMenu("UI/Panel Resize"), DisallowMultipleComponent]
     public class PanelResize : MonoBehaviour, IPointerDownHandler, IDragHandler
     {
         #region Fields
@@ -12,8 +15,8 @@ namespace CursedSummit.UI
         private Vector2 min = new Vector2(100, 100);    //Min size
         [SerializeField]
         private Vector2 max = new Vector2(400, 400);    //Max size
-        private RectTransform panelTransform, parentTransform;
-        private Vector2 originalMousePos, originalSizeDelta;
+        private RectTransform panelTransform, parentTransform;  //Panel/parent transform
+        private Vector2 originalMousePos, originalSizeDelta;    //Mouse position/panel size on mouse down
         #endregion
 
         #region Methods

@@ -7,6 +7,7 @@ namespace CursedSummit
     /// <summary>
     /// Main Menu handler
     /// </summary>
+    [DisallowMultipleComponent]
     public class Menu : MonoBehaviour
     {
         #region Fields
