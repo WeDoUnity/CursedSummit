@@ -1,4 +1,5 @@
-﻿using UnityEngine;
+﻿using CursedSummit.Utils;
+using UnityEngine;
 using UnityEditor;
 using UnityEngine.SceneManagement;
 
@@ -10,7 +11,7 @@ namespace CursedSummit
     public enum GameScenes
     {
         LOADING = 0,
-        MENU = 1
+        MAIN_MENU = 1
     }
 
     /// <summary>
@@ -37,7 +38,7 @@ namespace CursedSummit
         /// <param name="scene">Scene to load</param>
         public void LoadScene(GameScenes scene)
         {
-            Debug.Log("Loading scene: " + scene);
+            Debug.Log("Loading scene: " + EnumUtils.GetNameTitleCase(scene));
             this.CurrentScene = scene;
             SceneManager.LoadScene((int)scene);
         }

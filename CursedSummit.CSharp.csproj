@@ -13,7 +13,8 @@
     <TargetFrameworkIdentifier>.NETFramework</TargetFrameworkIdentifier>
     <TargetFrameworkVersion>v3.5</TargetFrameworkVersion>
     <TargetFrameworkProfile>Unity Subset v3.5</TargetFrameworkProfile>
-    <CompilerResponseFile></CompilerResponseFile>
+    <CompilerResponseFile>
+    </CompilerResponseFile>
     <UnityProjectType>Game:1</UnityProjectType>
     <UnityBuildTarget>StandaloneWindows64:19</UnityBuildTarget>
     <UnityVersion>5.3.5f1</UnityVersion>
@@ -102,6 +103,7 @@
     <Compile Include="Assets\CursedSummit\UI\PanelResize.cs" />
     <Compile Include="Assets\CursedSummit\UI\Progressbar.cs" />
     <Compile Include="Assets\CursedSummit\Utils\CSUtils.cs" />
+    <Compile Include="Assets\CursedSummit\Utils\EnumUtils.cs" />
     <Compile Include="Assets\CursedSummit\Utils\XKCDColours.cs" />
     <Compile Include="Assets\FileSystemEnumerator\FileSystemEnumerator.cs" />
     <Compile Include="Assets\Wwise\Deployment\API\Generated\Common\AKRESULT.cs" />

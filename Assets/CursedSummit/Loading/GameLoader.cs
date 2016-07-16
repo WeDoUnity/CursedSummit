@@ -493,7 +493,7 @@ namespace CursedSummit.Loading
             Log($"Completed loading sequence in {loading.Elapsed.TotalSeconds}s, going to main menu...");
 
             yield return new WaitForSeconds(1);
-            GameLogic.Instance.LoadScene(GameScenes.MENU);
+            GameLogic.Instance.LoadScene(GameScenes.MAIN_MENU);
         }
 
         private void Awake()
