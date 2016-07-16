@@ -4,12 +4,15 @@ using UnityEngine.EventSystems;
 
 namespace CursedSummit.UI
 {
-    [RequireComponent(typeof(RectTransform))]
-     public class PanelDrag : MonoBehaviour, IPointerDownHandler, IDragHandler
+    /// <summary>
+    /// Allows dragging the parent transform by dragging this RectTransform
+    /// </summary>
+    [RequireComponent(typeof(RectTransform)), AddComponentMenu("UI/Drag Panel"), DisallowMultipleComponent]
+    public class PanelDrag : MonoBehaviour, IPointerDownHandler, IDragHandler
     {
         #region Fields
-        private Vector2 originalMousePos, originalPanelPos;
-        private RectTransform panelTransform, parentTransform;
+        private Vector2 originalMousePos, originalPanelPos;     //Mouse/panel positions on mouse hold
+        private RectTransform panelTransform, parentTransform;  //Panel/parent transforms
         #endregion
 
         #region Methods

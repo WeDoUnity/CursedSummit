@@ -7,7 +7,7 @@ using UnityEngine.UI;
 
 namespace CursedSummit
 {
-    [RequireComponent(typeof(Canvas))]
+    [RequireComponent(typeof(Canvas)), DisallowMultipleComponent]
     public class DebugWindow : MonoBehaviour
     {
         /// <summary>
@@ -76,13 +76,45 @@ namespace CursedSummit
             #endregion
         }
 
+        /// <summary>
+        /// Temporary log data structure
+        /// </summary>
+        private struct TempLog
+        {
+            #region Fields
+            public readonly string message;
+            public readonly string stackTrace;
+            public readonly LogType type;
+            #endregion
+
+            #region Constructors
+            /// <summary>
+            /// Sets a new TempLog structure
+            /// </summary>
+            /// <param name="message">Log message</param>
+            /// <param name="stackTrace">Log stack trace</param>
+            /// <param name="type">Log type</param>
+            public TempLog(string message, string stackTrace, LogType type)
+            {
+                this.message = message;
+                this.stackTrace = stackTrace;
+                this.type = type;
+            }
+            #endregion
+        }
+
         #region Instance
+        /// <summary>
+        /// Current DebugWindow instance
+        /// </summary>
         public static DebugWindow Instance { get; private set; }
         #endregion
 
-        #region Static fields
-        private const int maxLogs = 500;
-        private static readonly Dictionary<LogType, Color> colours = new Dictionary<LogType, Color>(5)
+        #region Constants
+        // Max amount of saved log messages
+        private const int MaxLogs = 500;
+        //LogType -> Color conversion dictionary
+        private static readonly Dictionary<LogType, Color> Colours = new Dictionary<LogType, Color>(5)
         {
             { LogType.Log,       XKCDColours.White  },
             { LogType.Warning,   XKCDColours.Yellow },
@@ -94,15 +126,19 @@ namespace CursedSummit
 
         #region Fields
         [SerializeField]
-        private Text version;
+        private Text version;                   //Version text label
         [SerializeField]
-        private GameObject window, logPrefab;
+        private GameObject window, logPrefab;   //Debug window, log member prefab
         [SerializeField]
-        private VerticalLayoutGroup layout;
-        private readonly LogQueue<GameObject> queue = new LogQueue<GameObject>(maxLogs);
+        private VerticalLayoutGroup layout;     //Log layout group
+        private List<TempLog> preLogs = new List<TempLog>();                                //Logs posted before the window was correctly initiated
+        private readonly LogQueue<GameObject> queue = new LogQueue<GameObject>(MaxLogs);    //Queue of saved logs
         #endregion
 
         #region Properties
+        /// <summary>
+        /// Debug window visibility
+        /// </summary>
         public bool Visible
         {
             get { return this.window.activeSelf; }
@@ -114,30 +150,34 @@ namespace CursedSummit
                 }
             }
         }
-
-        private int index;
-        private int Index
-        {
-            get
-            {
-                if (this.index >= maxLogs) { this.index = 0; }
-                return this.index++;
-            }
-        }
         #endregion
 
         #region Methods
+        /// <summary>
+        /// Prints logged messages to the debug window
+        /// </summary>
+        /// <param name="message">Log message</param>
+        /// <param name="stackTrace">Log stack trace</param>
+        /// <param name="type">Log type</param>
         private void OnLog(string message, string stackTrace, LogType type)
         {
-            //if (stackTrace.Contains("Wwise")) { return; } //Okay so logging Wwise exception makes it go nuts... nice.
+            if (string.IsNullOrEmpty(message)) { return; }
 
             GameObject element = Instantiate(this.logPrefab);
-            element.name += this.Index;
-            element.transform.parent = this.layout.transform;
-            Text label = element.GetComponent<Text>();
-            label.text = message + (type == LogType.Exception ? stackTrace : string.Empty);
-            label.color = colours[type];
+            element.transform.SetParent(this.layout.transform);
+            element.GetComponent<ExpandableText>().SetText(message, message + (type == LogType.Exception ? stackTrace : string.Empty), Colours[type]);
             this.queue.Log(element)?.DestroyThis();
+        }
+
+        /// <summary>
+        /// Saves log messages to a list for future display
+        /// </summary>
+        /// <param name="message">Log message</param>
+        /// <param name="stackTrace">Log stack trace</param>
+        /// <param name="type">Log type</param>
+        private void OnLogDelayed(string message, string stackTrace, LogType type)
+        {
+            this.preLogs.Add(new TempLog(message, stackTrace, type));
         }
         #endregion
 
@@ -149,13 +189,26 @@ namespace CursedSummit
             Instance = this;
             DontDestroyOnLoad(this);
 
+            Application.logMessageReceived += OnLogDelayed;
+            Debug.Log("Running The Cursed Summit version " + GameVersion.VersionString);
             this.version.text += GameVersion.VersionString;
+        }
+
+        private void Start()
+        {
+            foreach (TempLog temp in this.preLogs)
+            {
+                OnLog(temp.message, temp.stackTrace, temp.type);
+            }
+            this.preLogs = null;
+
+            Application.logMessageReceived -= OnLogDelayed;
             Application.logMessageReceived += OnLog;
         }
 
         private void Update()
         {
-            if ((Input.GetKeyDown(KeyCode.LeftAlt) && Input.GetKey(KeyCode.F11)) || (Input.GetKey(KeyCode.LeftAlt) && Input.GetKeyDown(KeyCode.F11)))
+            if (Input.GetKey(KeyCode.LeftAlt) && Input.GetKeyDown(KeyCode.F11))
             {
                 this.Visible = !this.Visible;
             }
